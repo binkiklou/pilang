@@ -14,4 +14,4 @@ print(tokens)
 
 # Parsing
 print('-----PARSING-----')
-tree = parse.parse(tokens)
+tree = parse.parse(tokens,filename=str(sys.argv[1]))
