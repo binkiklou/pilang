@@ -10,10 +10,45 @@ The declaration must either hint or contain the size of the array.
 [foo] # Copy of existing array
 [{1,2},{3,4}] # Array literal
 ```
+# Reshape Operator
+The reshape arrow(name should be changed) is the equivalent of the ``->`` arrow(*see Item manipulation*) for full arrays, and is used to reshape the right array to the left array's shape.
+
+> Not yet defined: The arrow could be ``=>`` or ``<=``, because the side of expression matters. For now ``=>`` is used even though the right expression is reshaped to the left, unlike what the arrow implies.
+
+```
+[3;3]=>range(3*3)
+```
 
 ## Selection 
 
-Selection is the mechanism for being able to selecting sections or parts of an array. It can also imply recursion.
+Selection is the mechanism for being able to selecting sections or parts of an array. It can also imply recursion. You can select columns, rows, parts and even items. You can also select non-specifically, so that paired with ``->`` or ``=>`` you can set a value according to it's location.
+
+Selecting dimensions will return an array of that dimension
+```
+# This returns an array containing the first item of each row
+[3;3](col 0)
+```
+
+Items can also be selected, note that what their index is, isn't clear yet.
+```
+[3;3](item 0)
+```
+
+But the main feature of selection, is when it is paired with ``->`` or ``=>`` you can programmatically set items via an expression. In the following  example we will square an existing array
+```
+foo:[{1,2},{3,4}]
+foo(item x)->(x^2)
+```
+
+### Behaviour
+In other languages selecting an out-of-range value will lead to a runtime error. But because of the fixed size of arrays, the error can be caught at runtime. **This also means that array selection is always a constant scalar.**
+
+In the event of a out-of-range access, to avoid segfaults, the object returned will be a location to nowhere will no value.(This part isn't decided yet)
+
+```
+arr:int[5]->0
+[arr](item 5) # Compile-Time error
+```
 
 
 ## Item manipulation
@@ -29,7 +64,7 @@ The left-side of an arrow is an expression, which means that it can be much more
 
 This example shows an DIY range function, it sets the value to the index of the item.
 ```
-[5](item x)->x
+[5](index x)->x
 # 1 2 3 4 5
 ```
 
@@ -40,4 +75,5 @@ It can also be used as a lambda function
 a:int[3;3]->0
 b:range(3)
 ```
-Variables are mutable but their size is constant
+
+Variables store their arrays, they do not hold reference to it. As such their size is immutable. It will be possible to have structures with sizes that can change, but I have not thought of  an elegant way to make that work yet.
