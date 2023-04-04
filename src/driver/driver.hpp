@@ -2,6 +2,7 @@
 
 #include "../lexer/source.hpp"
 #include "../lexer/lexer.hpp"
+#include "../parser/parser.hpp"
 
 class driver
 {
@@ -27,4 +28,5 @@ class driver
 
     source* m_src;
     lexer* m_lexer;
+    parser* m_parser;
 };

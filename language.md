@@ -29,13 +29,10 @@ Selecting a dimension will return a vector(or matrix for higher dimensions) from
 foo:int[3;3]<=range(9)
 
 # Selects col from (col,row)
-foo({0} x)->0
+foo({0}:0)->0
 
 # Selects row from (col, row)
-foo({1} x)->0
-
-# Select each col
-foo({0} x)=>(y)->index(y)
+foo({1}:0)->0
 ```
 
 ### Behaviour

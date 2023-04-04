@@ -30,6 +30,16 @@ void driver::start(source* src)
         _dump_tokens();
     }
 
+    // Parser
+    this->m_parser->tokens = this->m_lexer->tokens;
+
+    if(!this->m_parser->parse())
+    {
+        print_verbose("Parser failed, aborting compilation.");
+        _delete_phases();
+        return;
+    }
+
     _delete_phases();
 }
 
@@ -68,6 +78,8 @@ void driver::_init_phases()
     
     this->m_lexer = new lexer;
     this->m_lexer->m_src = this->m_src;
+
+    this->m_parser = new parser;
 }
 
 void driver::_delete_phases()
@@ -78,6 +90,12 @@ void driver::_delete_phases()
     {
         delete this->m_lexer;
         this->m_lexer = nullptr;
+    }
+
+    if(this->m_parser != nullptr)
+    {
+        delete this->m_parser;
+        this->m_parser = nullptr;
     }
 }
 
