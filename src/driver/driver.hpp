@@ -9,7 +9,10 @@ class driver
     public:
     // Creates the tools and start the compile process
     void start(source*);
-    
+
+    // Options
+    bool dump_tokens = false;
+
     private:
     void _load_file();
 
@@ -18,6 +21,8 @@ class driver
 
     // Deletes all the phases at once
     void _delete_phases();
+
+    void _dump_tokens();
 
     bool m_ok = false;
 

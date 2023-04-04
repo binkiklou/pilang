@@ -42,7 +42,5 @@ char const* token_names[] = {
 
 std::string tkn_type_as_string(TKN_TYPE t)
 {
-    std::string result;
-    result += token_names[static_cast<int>(t)];
-    return result;
+    return std::string(token_names[static_cast<int>(t)]);
 }

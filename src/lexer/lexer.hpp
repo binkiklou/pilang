@@ -16,7 +16,7 @@ class lexer
     std::vector<token>* tokens = nullptr;
     
     bool tokenize();
-
+    
     // Setting it to false will fail the lexer process
     bool _good = true;
     private:

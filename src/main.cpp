@@ -26,6 +26,10 @@ int main(int argc, char* argv[])
             envargs::is_verbose = true;
             print_verbose("Verbose mode activated");
         }
+        else if(strcmp("-dump-tokens",argv[i]) == 0)
+        {
+            d.dump_tokens = true;
+        }
         else if(s == nullptr)
         {
             s = new source;

@@ -25,6 +25,11 @@ void driver::start(source* src)
         return;
     }
 
+    if(this->dump_tokens)
+    {
+        _dump_tokens();
+    }
+
     _delete_phases();
 }
 
@@ -74,4 +79,18 @@ void driver::_delete_phases()
         delete this->m_lexer;
         this->m_lexer = nullptr;
     }
+}
+
+void driver::_dump_tokens()
+{
+    for(const token& t: *this->m_lexer->tokens)
+    {
+        print(
+            tkn_type_as_string(t.m_type) +
+            " '" +
+            t.m_word.data +
+            '\''
+            );
+    }
+    print("----------");
 }

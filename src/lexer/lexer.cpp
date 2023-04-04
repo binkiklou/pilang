@@ -29,8 +29,6 @@ bool lexer::tokenize()
 
     _preprocess();
 
-    print(this->_content);
-
     this->tokens = new std::vector<token>;
 
     while(this->_position < _content.length() && _good) {
@@ -39,11 +37,6 @@ bool lexer::tokenize()
 
     if(!_good){
         return false;
-    }
-
-    for(token t : *this->tokens)
-    {
-        print("("+tkn_type_as_string(t.m_type)+")"+t.m_word.data);
     }
 
     return true;
