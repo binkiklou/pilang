@@ -149,34 +149,36 @@ bool lexer::_get_symbol()
         SINGLE_CHAR_SYMBOL(';',TKN_TYPE::SEMICOLON)
         SINGLE_CHAR_SYMBOL('.',TKN_TYPE::PERIOD)
         SINGLE_CHAR_SYMBOL(',',TKN_TYPE::COMMA)
+        SINGLE_CHAR_SYMBOL('=',TKN_TYPE::EQUAL)
+        SINGLE_CHAR_SYMBOL('<',TKN_TYPE::SMALLER)
+        SINGLE_CHAR_SYMBOL('>',TKN_TYPE::GREATER)
     }
 
-    if(tkn.m_type != UNKNOWN || c == '=')
+    if(tkn.m_type != UNKNOWN)
     {
         w.data = c;
 
         // Double Character symbol
-        if( (c == '-' || c == '=') && _position != this->_content.size() - 1)
+        if(_position != this->_content.size() - 1)
         {
-            if(_content[_position + 1] == '>')
+            if(c=='-' && _content[_position+1] == '>')
             {
-                print_verbose("Caught arrow");
+                tkn.m_type = TKN_TYPE::SCALAR_ARROW;
+                w.data = "->";
                 _next();
-                w.data = c + '>';
-
-                if(w.data == "->")
-                {
-                    tkn.m_type = TKN_TYPE::ARRAY_ARROW;
-                }
-                else
-                {
-                    tkn.m_type = TKN_TYPE::SCALAR_ARROW;
-                }
             }
-        }
-        else if(c=='=')
-        {
-            return false;
+            else if(c=='=' && _content[_position+1] == '>')
+            {
+                tkn.m_type = TKN_TYPE::RIGHT_BIG_ARROW;
+                w.data = "=>";
+                _next();
+            }
+            else if(c == '<' && _content[_position+1] == '=')
+            {
+                tkn.m_type = TKN_TYPE::LEFT_BIG_ARROW;
+                w.data = "<=";
+                _next();
+            }
         }
 
         tkn.m_word = w;
