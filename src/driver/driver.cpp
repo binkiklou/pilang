@@ -83,13 +83,14 @@ void driver::_delete_phases()
 
 void driver::_dump_tokens()
 {
-    for(const token& t: *this->m_lexer->tokens)
+    for(token& t: *this->m_lexer->tokens)
     {
         print(
             tkn_type_as_string(t.m_type) +
             " '" +
             t.m_word.data +
-            '\''
+            "' loc=" +
+            t.m_word.loc.as_string()
             );
     }
     print("----------");

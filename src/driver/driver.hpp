@@ -1,7 +1,6 @@
 #pragma once
 
-#include "source.hpp"
-
+#include "../lexer/source.hpp"
 #include "../lexer/lexer.hpp"
 
 class driver

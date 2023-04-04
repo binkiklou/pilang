@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../driver/source.hpp"
+#include "source.hpp"
 
 enum TKN_TYPE {
     UNKNOWN,

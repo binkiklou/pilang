@@ -77,6 +77,15 @@ void lexer::_add_token(token& tkn)
     this->tokens->push_back(tkn);
 }
 
+location lexer::_get_loc()
+{
+    location loc;
+    loc.col = _col;
+    loc.line = _line;
+    loc.src_ptr = m_src;
+    return loc;
+}
+
 void lexer::_advance()
 {
     // Does not check for out of range yet
@@ -122,8 +131,7 @@ bool lexer::_get_symbol()
     token tkn;
     tkn.m_type = UNKNOWN;
     word w;
-    w.line = _line;
-    w.col = _col;
+    w.loc = _get_loc();
     
     // One-Character Symbols
     switch(c)
@@ -196,8 +204,7 @@ bool lexer::_get_char_lit()
         {
             token tkn;
             word w;
-            w.col = _col;
-            w.line = _line;
+            w.loc = _get_loc();
             w.data = "'";
             w.data += _content[_position + 1] + _content[_position + 2];
             w.data += "'";
@@ -233,8 +240,7 @@ bool lexer::_get_char_lit()
 
             token tkn;
             word w;
-            w.col = _col;
-            w.line = _line;
+            w.loc = _get_loc();
             w.data += "'";
             w.data += _content[_position + 1];
             w.data += "'";
@@ -289,8 +295,7 @@ bool lexer::_get_number()
             word w;
             w.data = _content[_position];
             w.data += '.';
-            w.col = _col;
-            w.line = _line;
+            w.loc = _get_loc();
             _next();
             _next();
 
@@ -318,8 +323,7 @@ bool lexer::_get_number()
         // int literal
         token tkn;
         word w;
-        w.col = _col;
-        w.line = _line;
+        w.loc = _get_loc();
 
         while(_position < _content.size() && isdigit(_content[_position]))
         {
@@ -344,8 +348,7 @@ bool lexer::_get_word()
     if(isalpha(c))
     {
         word w;
-        w.col = _col;
-        w.line = _line;
+        w.loc = _get_loc();
 
         while(_position < _content.size() && isalpha(_content[_position]))
         {

@@ -27,3 +27,14 @@ std::vector<std::string>* source::get_lines()
 {
     return this->m_lines;
 }
+
+std::string location::as_string()
+{
+    if(src_ptr == nullptr)
+    {
+        return std::to_string(line) + ":" + std::to_string(col);
+    }
+    return "<" + src_ptr->filename + ":" +
+    std::to_string(line) + ":" +
+    std::to_string(col) + ">";
+}

@@ -1,4 +1,4 @@
-#include "../driver/source.hpp"
+#include "source.hpp"
 
 #include "token.hpp"
 
@@ -33,6 +33,7 @@ class lexer
     void _preprocess();
 
     void _add_token(token&);
+    location _get_loc();
 
     void _advance();
     void _next();
