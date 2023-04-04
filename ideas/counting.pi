@@ -1,7 +1,0 @@
-# Count the number of positive and negative integers in an array
-in:int[{-1,5,0,0,-5,-3,2,8,7}]
-
-# Note: This way of doing things means that the array, must be iterated twice
-pos:sum([in](item x)->?x>0 1 0)
-neg:sum([in](item x)->?x<0 1 0)
-max(pos,neg)

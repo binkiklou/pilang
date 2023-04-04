@@ -21,23 +21,21 @@ The reshape arrow(name should be changed) is the equivalent of the ``->`` arrow(
 
 ## Selection 
 
-Selection is the mechanism for being able to selecting sections or parts of an array. It can also imply recursion. You can select columns, rows, parts and even items. You can also select non-specifically, so that paired with ``->`` or ``=>`` you can set a value according to it's location.
+Selection is the mechanism for being able to selecting sections or parts of an array. It can also imply recursion. You can select specific dimensions(row,columns,...) or even specific items. You can also select non-specifically, so that paired with ``->`` or ``=>`` you can set a value according to an expression.
 
-Selecting dimensions will return an array of that dimension
-```
-# This returns an array containing the first item of each row
-[3;3](col 0)
-```
 
-Items can also be selected, note that what their index is, isn't clear yet.
+Selecting a dimension will return a vector(or matrix for higher dimensions) from that dimension
 ```
-[3;3](item 0)
-```
+foo:int[3;3]<=range(9)
 
-But the main feature of selection, is when it is paired with ``->`` or ``=>`` you can programmatically set items via an expression. In the following  example we will square an existing array
-```
-foo:[{1,2},{3,4}]
-foo(item x)->(x^2)
+# Selects col from (col,row)
+foo({0} x)->0
+
+# Selects row from (col, row)
+foo({1} x)->0
+
+# Select each col
+foo({0} x)=>(y)->index(y)
 ```
 
 ### Behaviour
