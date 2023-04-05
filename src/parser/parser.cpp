@@ -10,9 +10,19 @@ parser_node::parser_node()
     this->m_type = PNODE_TYPE::EMPTY_NODE;
 }
 
+std::string parser_node::get_node_str()
+{
+    return "[EMPTY]";
+}
+
 hint_node::hint_node()
 {
     this->m_type = PNODE_TYPE::HINT_NODE;
+}
+
+std::string hint_node::get_node_str()
+{
+    return "[HINT](" + this->m_hint + ")";
 }
 
 token_node::token_node()
@@ -20,7 +30,21 @@ token_node::token_node()
     this->m_type = PNODE_TYPE::TOKEN_NODE;
 }
 
+std::string token_node::get_node_str()
+{
+    return "[TOKEN]("+tkn_type_as_string(m_token.m_type)+":"+m_token.m_word.data+")";
+}
 
+error_node::error_node()
+{
+    this->m_type = PNODE_TYPE::ERROR_NODE;
+    this->has_token = false;
+}
+
+std::string error_node::get_node_str()
+{
+    return "[ERROR]";
+}
 
 // --- PARSER ---
 parser::parser()

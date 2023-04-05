@@ -41,9 +41,22 @@ void driver::start(source* src)
     if(!this->m_parser->parse())
     {
         print_verbose("Parser failed, aborting compilation.");
+        
+        // Should only allow dump for certain errors
+        if(dump_syntax_tree)
+        {
+            _dump_tree();
+        }
+
         _delete_phases();
         return;
     }
+
+        // Should only allow dump for certain errors
+        if(dump_syntax_tree)
+        {
+            _dump_tree();
+        }
 
     _delete_phases();
 }
@@ -117,6 +130,29 @@ void driver::_dump_tokens()
             );
     }
     print("----------");
+}
+
+void driver::_dump_pnode(parser_node* pnode, unsigned int depth)
+{
+    std::string txt;
+    txt = std::string("\t", depth);
+    txt += pnode->get_node_str();
+    print(txt);
+    
+    for(parser_node* child : pnode->m_children)
+    {
+        _dump_pnode(child, depth + 1);
+    }
+}
+
+void driver::_dump_tree()
+{
+    if(m_parser == nullptr){
+        return;
+    }
+
+    print_verbose("Dumping syntax tree");
+    _dump_pnode(&this->m_parser->root, 0);
 }
 
 void driver::_write_diagnostic(diagnostic& diag)

@@ -30,6 +30,10 @@ int main(int argc, char* argv[])
         {
             d.dump_tokens = true;
         }
+        else if(strcmp("-dump-stree",argv[i]) == 0)
+        {
+            d.dump_syntax_tree = true;
+        }
         else if(s == nullptr)
         {
             s = new source;

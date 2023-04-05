@@ -6,7 +6,6 @@
 
 void syntax::get_top_level()
 {
-    
 }
 
 bool parser::parse()
