@@ -12,8 +12,12 @@ class syntax
 {
     public:
     syntax(parser*);
-    
-    bool get_value();
+
+    bool get_const_value();
+
+    bool get_const_expr();
+
+    bool get_datatype();
 
     bool get_arr_size();
     bool get_arr_copy();

@@ -18,14 +18,14 @@ char const* token_names[] = {
     tknstr(SEMICOLON)
     tknstr(PERIOD)
     tknstr(COMMA)
-    
+    tknstr(EXCLAMATION_MARK)
+    tknstr(QUESTION_MARK)
     tknstr(SCALAR_ARROW)
     tknstr(LEFT_BIG_ARROW)
     tknstr(RIGHT_BIG_ARROW)
     tknstr(EQUAL)
     tknstr(GREATER)
     tknstr(SMALLER)
-
     tknstr(KW_RANGE)
     tknstr(DATATYPE)
     tknstr(IDENTIFIER)

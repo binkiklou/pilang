@@ -156,6 +156,8 @@ bool lexer::_get_symbol()
         SINGLE_CHAR_SYMBOL('/',TKN_TYPE::MATH_OP)
         SINGLE_CHAR_SYMBOL('*',TKN_TYPE::MATH_OP)
         SINGLE_CHAR_SYMBOL('-',TKN_TYPE::MATH_OP) // Could be begining of an arrow
+        SINGLE_CHAR_SYMBOL('^',TKN_TYPE::MATH_OP)
+        SINGLE_CHAR_SYMBOL('%',TKN_TYPE::MATH_OP) // Not sure if modulo will be in language
         SINGLE_CHAR_SYMBOL('[',TKN_TYPE::LBRACKET)
         SINGLE_CHAR_SYMBOL(']',TKN_TYPE::RBRACKET)
         SINGLE_CHAR_SYMBOL('{',TKN_TYPE::LBRACE)
@@ -169,6 +171,8 @@ bool lexer::_get_symbol()
         SINGLE_CHAR_SYMBOL('=',TKN_TYPE::EQUAL)
         SINGLE_CHAR_SYMBOL('<',TKN_TYPE::SMALLER)
         SINGLE_CHAR_SYMBOL('>',TKN_TYPE::GREATER)
+        SINGLE_CHAR_SYMBOL('!',TKN_TYPE::EXCLAMATION_MARK)
+        SINGLE_CHAR_SYMBOL('?',TKN_TYPE::QUESTION_MARK)
     }
 
     if(tkn.m_type != UNKNOWN)
