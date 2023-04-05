@@ -14,8 +14,11 @@ class syntax
     syntax(parser*);
 
     bool get_const_value();
-
     bool get_const_expr();
+
+    bool get_scalar_arrow_left();
+    bool get_scalar_arrow_right();
+    bool get_scalar_arrow_expr();
 
     bool get_datatype();
 

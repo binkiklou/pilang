@@ -42,7 +42,69 @@ bool syntax::get_const_expr()
         if(!get_const_value())
         {
             _p->error_here("Expected term after operator.");
+            _p->cancel_try();
+            return false;
         }
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+// arr_init
+bool syntax::get_scalar_arrow_left()
+{
+    _p->try_hint("scalar_arrow_left");
+
+    if(!get_arr_init())
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+// const_expr
+bool syntax::get_scalar_arrow_right()
+{
+    _p->try_hint("scalar_arrow_right");
+
+    if(!get_const_expr())
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+// left -> right
+bool syntax::get_scalar_arrow_expr()
+{
+    _p->try_hint("scalar_arrow_expr");
+    
+    if(!get_scalar_arrow_left())
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!_p->match(SCALAR_ARROW))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    // Expect
+
+    if(!get_scalar_arrow_right())
+    {
+        _p->error_line_remain("Invalid scalar right-side");
+        _p->cancel_try();
+        return false;
     }
 
     _p->keep_hint();

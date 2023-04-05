@@ -198,6 +198,7 @@ void parser::try_hint(const std::string& h)
     _node_ptr = n;
     _try_nodes.push(n);
     _try_pos.push(_pos);
+    print_verbose("Saving:" + std::to_string(_pos) + " (" + h + ")");
 }
 
 void parser::keep_hint()
@@ -217,11 +218,13 @@ void parser::keep_hint()
     _try_nodes.pop();
     _try_nodes.top()->m_children.push_back(ptr);
     _node_ptr = _try_nodes.top();
+    print_verbose("Kept" + std::to_string(_pos) + "; Removed " + std::to_string(_try_pos.top()));
     _try_pos.pop();
 }
 
 void parser::cancel_try()
 {
+    print_verbose(std::to_string(_pos)+"->"+std::to_string(_try_pos.top()) + " (" + _try_nodes.top()->m_hint + ")");
     _pos = _try_pos.top();
     _try_pos.pop();
     _try_nodes.pop();

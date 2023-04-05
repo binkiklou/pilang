@@ -7,7 +7,7 @@
 void syntax::get_top_level()
 {
     if(get_vardecl()){}
-    else{_p->error_line("Unrecognized top-level statement");}
+    else{_p->error_line_remain("Unrecognized top-level statement");}
 }
 
 bool parser::parse()

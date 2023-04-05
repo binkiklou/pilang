@@ -4,6 +4,8 @@ This file defines every methods required for parsing declarations
 
 #include "syntax.hpp"
 
+#include "../shared/print.hpp"
+
 // datatype
 // !datatype
 bool syntax::get_datatype()
@@ -97,6 +99,9 @@ bool syntax::get_arr_lit()
     return true;
 }
 
+// [arr_size]
+// [arr_copy]
+// [arr_lit]
 bool syntax::get_arr_init()
 {
     _p->try_hint("arr_init");
@@ -120,7 +125,7 @@ bool syntax::get_arr_init()
         return false;
     }
 
-    if(!_p->match(RBRACKET)){
+    if(!_p->expect(RBRACKET)){
         _p->cancel_try();
         return false;
     }
@@ -147,12 +152,17 @@ bool syntax::get_vardecl()
         return false;
     }
 
-    if(!get_arr_init())
+
+    if(get_scalar_arrow_expr()){}
+    else if(get_arr_init()){}
+    else
     {
         _p->error_line_remain("Expected valid array declaration");
         _p->cancel_try();
         return false;
     }
+
+    print_verbose("keeping vdecl");
 
     _p->keep_hint();
     return true;
