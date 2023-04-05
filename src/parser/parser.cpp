@@ -77,6 +77,9 @@ token parser::peek_now()
     if(_pos >= tokens->size() || tokens == nullptr)
     {
         print_verbose("Cannot peek now");
+        token t = tokens->at(tokens->size() - 1);
+        t.m_type = _EOF;
+        return t;
     }
     return tokens->at(_pos);
 }
@@ -171,7 +174,12 @@ void parser::cancel_try()
 {
     _pos = _try_pos.top();
     _try_pos.pop();
-    _node_ptr = _try_nodes.top();
+    _try_nodes.pop();
+    if(_try_nodes.size() > 0){
+        _node_ptr = _try_nodes.top();
+        return;
+    }
+    _node_ptr = _base_node_ptr;
 }
 
 void parser::_add_hint_node(const std::string& h)

@@ -12,6 +12,8 @@ class syntax
 {
     public:
     syntax(parser*);
+    
+    bool get_value();
 
     bool get_arr_size();
     bool get_arr_copy();

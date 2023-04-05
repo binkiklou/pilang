@@ -4,7 +4,7 @@
 
 #include "../shared/print.hpp"
 
-// 1;2;3
+// 1;2;..
 bool syntax::get_arr_size()
 {
     _p->try_hint("arr_size");
@@ -17,31 +17,23 @@ bool syntax::get_arr_size()
 
     while(_p->match(SEMICOLON))
     {
-        _p->match(INT_LIT);
+        if(!_p->expect(INT_LIT))
+        {
+            _p->cancel_try();
+            return false;
+        }
     }
 
     _p->keep_hint();
     return true;
 }
 
-// {identifier}
+// identifier
 bool syntax::get_arr_copy()
 {
     _p->try_hint("arr_copy");
 
-    if(!_p->match(LBRACE))
-    {
-        _p->cancel_try();
-        return false;
-    }
-
     if(!_p->match(IDENTIFIER))
-    {
-        _p->cancel_try();
-        return false;
-    }
-
-    if(!_p->match(RBRACE))
     {
         _p->cancel_try();
         return false;
@@ -55,7 +47,36 @@ bool syntax::get_arr_copy()
 bool syntax::get_arr_lit()
 {
     _p->try_hint("arr_lit");
-    return false;
+
+    if(!_p->match(LBRACE))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!get_value()){
+        _p->cancel_try();
+        return false;
+    }
+
+    while(_p->match(COMMA))
+    {
+        if(!get_value()){
+            _p->error_here("Expected a value");
+            _p->cancel_try();
+            return false;
+        }
+    }
+
+    if(!_p->match(RBRACE))
+    {
+        _p->error_here("Opening brace need closing brace");
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
 }
 
 bool syntax::get_arr_init()
@@ -110,7 +131,7 @@ bool syntax::get_vardecl()
 
     if(!get_arr_init())
     {
-        _p->error_here("Expected array declaration");
+        _p->error_here("Expected valid array declaration");
         _p->cancel_try();
         return false;
     }
@@ -122,9 +143,7 @@ bool syntax::get_vardecl()
 void syntax::get_top_level()
 {
     if(get_vardecl()){}
-    else{
-        _p->error_here("Unrecognized top-level statement");
-    }
+    else{_p->error_here("Unrecognized top-level statement");}
 }
 
 bool parser::parse()
