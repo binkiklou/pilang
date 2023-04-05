@@ -13,10 +13,14 @@ class syntax
     public:
     syntax(parser*);
 
+    bool get_arr_size();
+    bool get_arr_copy();
+    bool get_arr_lit();
+
     bool get_arr_init();
 
     bool get_vardecl();
-
+ 
     void get_top_level();
     private:
     parser* _p;

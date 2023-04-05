@@ -361,12 +361,12 @@ bool lexer::_get_word()
 {
     char& c = _content[_position];
 
-    if(isalpha(c))
+    if(isalpha(c) || c == '_')
     {
         word w;
         w.loc = _get_loc();
 
-        while(_position < _content.size() && isalpha(_content[_position]))
+        while(_position < _content.size() && (isalpha(_content[_position]) || _content[_position] == '_'))
         {
             w.data += _content[_position];
             _next();
@@ -376,7 +376,11 @@ bool lexer::_get_word()
         tkn.m_word = w;
         tkn.m_type = TKN_TYPE::UNKNOWN;
 
-        if(w.data == "true" || w.data == "false")
+        if(w.data == "int" || w.data == "bool" || w.data == "double" || w.data == "float")
+        {
+            tkn.m_type = TKN_TYPE::DATATYPE;
+        }
+        else if(w.data == "true" || w.data == "false")
         {
             tkn.m_type = TKN_TYPE::BOOL_LIT;
         }

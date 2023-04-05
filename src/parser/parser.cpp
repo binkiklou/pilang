@@ -98,6 +98,7 @@ bool parser::match(const TKN_TYPE& t)
 
     if(peek_now().m_type == t)
     {
+        _add_token_node(peek_now());
         _pos++;
         return true;
     }
