@@ -144,10 +144,10 @@ void driver::_write_src_view(unsigned int view_padding, bool has_cursor, unsigne
     unsigned int start_line = cursor_line - std::min(cursor_line, view_padding);
     unsigned int end_line = cursor_line + std::min((unsigned int)loc.src_ptr->get_lines()->size() - cursor_line, view_padding);
 
-    print("-->" + loc.as_string());
+    print("--> " + loc.as_string());
     for(int i = start_line; i <= end_line; i++)
     {
-        std::string buffer = std::to_string(start_line);
+        std::string buffer = std::to_string(start_line+1);
         buffer.resize(4, ' ');
         print(buffer + "| " + loc.src_ptr->get_lines()->at(start_line));
 
