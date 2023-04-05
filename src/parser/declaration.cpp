@@ -149,7 +149,7 @@ bool syntax::get_vardecl()
 
     if(!get_arr_init())
     {
-        _p->error_here("Expected valid array declaration");
+        _p->error_line_remain("Expected valid array declaration");
         _p->cancel_try();
         return false;
     }

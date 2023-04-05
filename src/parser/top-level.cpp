@@ -7,7 +7,7 @@
 void syntax::get_top_level()
 {
     if(get_vardecl()){}
-    else{_p->error_here("Unrecognized top-level statement");}
+    else{_p->error_line("Unrecognized top-level statement");}
 }
 
 bool parser::parse()
@@ -26,7 +26,7 @@ bool parser::parse()
     int loop_count = 0;
     
     // Error handling not yet implemented
-    while(this->_pos < this->tokens->size() && m_state == PARSER_STATE::PARSER_OK)
+    while(this->_pos < this->tokens->size() && (m_state == PARSER_STATE::PARSER_OK || m_state == PARSER_STATE::PARSER_RECOVERED) )
     {
         s.get_top_level();
 
@@ -38,6 +38,11 @@ bool parser::parse()
             this->m_state = PARSER_STATE::PARSER_UNRECOVERABLE;
             error_here("Parser infinite loop, exiting.");
             return false;
+        }
+
+        if(is_errored())
+        {
+            recover();
         }
     }
 

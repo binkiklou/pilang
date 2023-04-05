@@ -95,7 +95,7 @@ token parser::peek_back()
 
 bool parser::match(const TKN_TYPE& t)
 {
-    if(this->m_state != PARSER_STATE::PARSER_OK){
+    if(this->m_state != PARSER_STATE::PARSER_OK && this->m_state != PARSER_STATE::PARSER_RECOVERED){
         return false;
     }
 
@@ -123,13 +123,19 @@ bool parser::expect(const TKN_TYPE& t)
 
 void parser::error_here(const std::string& msg)
 {
+    if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
+    {
+        print_verbose("Ignoring error " + msg);
+        return;
+    }
+
     diagnostic d;
     d.m_type = diagnostic_type::syntax_diag;
     d.m_level = diagnostic_level::error;
-    d.msg = msg;
+    d.m_msg = msg;
     d.m_show = true;
     d.m_vlcount = 0;
-    d.has_cursor = true;
+    d.m_has_cursor = true;
     d.m_clength = peek_now().m_word.data.length();
     d.m_loc = peek_now().m_word.loc;
     this->diagnostics.push_back(d);
@@ -137,8 +143,52 @@ void parser::error_here(const std::string& msg)
     // Add error node to tree
     _add_error_node();
     
-    // TODO: Recover
-    this->m_state = PARSER_STATE::PARSER_UNRECOVERABLE;
+    this->m_state = PARSER_STATE::PARSER_RECOVERING;
+}
+
+void parser::error_line(const std::string& msg)
+{
+    if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
+    {
+        print_verbose("Ignoring error " + msg);
+        return;
+    }
+
+    diagnostic d;
+    d.m_type = diagnostic_type::syntax_diag;
+    d.m_level = diagnostic_level::error;
+    d.m_msg = msg;
+    d.m_show = true;
+    d.m_vlcount = 0;
+    d.m_has_cursor = true;
+    d.m_cursor_line = true;
+    d.m_loc = peek_now().m_word.loc;
+    d.m_loc.col = 1;
+    this->diagnostics.push_back(d);
+
+    this->m_state = PARSER_STATE::PARSER_RECOVERING;
+}
+
+void parser::error_line_remain(const std::string& msg)
+{
+    if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
+    {
+        print_verbose("Ignoring error " + msg);
+        return;
+    }
+
+    diagnostic d;
+    d.m_type = diagnostic_type::syntax_diag;
+    d.m_level = diagnostic_level::error;
+    d.m_msg = msg;
+    d.m_show = true;
+    d.m_vlcount = 0;
+    d.m_has_cursor = true;
+    d.m_cursor_line = true;
+    d.m_loc = peek_now().m_word.loc;
+    this->diagnostics.push_back(d);
+
+    this->m_state = PARSER_STATE::PARSER_RECOVERING;
 }
 
 void parser::try_hint(const std::string& h)
@@ -215,4 +265,40 @@ void parser::_add_error_node()
     error_node* node = new error_node;
     node->m_type = PNODE_TYPE::ERROR_NODE;
     _node_ptr->m_children.push_back(node);
+}
+
+bool parser::is_errored()
+{
+    if(m_state != PARSER_OK && m_state != PARSER_RECOVERED)
+    {
+        return true;
+    }
+    return false;
+}
+
+// Uses the very complex error handling algorithm of
+// "skipping to the next line and hoping for the best"
+void parser::recover()
+{
+    if(m_state != PARSER_RECOVERING)
+    {
+        return;
+    }
+
+    print_verbose("Parser recovering from error.");
+    print_verbose("Starting pos:" + std::to_string(_pos));
+    unsigned int e_line = peek_now().m_word.loc.line;
+
+    while(_pos < tokens->size() && peek_now().m_word.loc.line == e_line){
+        _pos++;
+    }
+
+    print_verbose("Ending pos:" + std::to_string(_pos));
+
+    if(_pos == tokens->size()){
+        this->m_state = PARSER_STATE::PARSER_UNRECOVERABLE;
+        return;
+    }
+
+    this->m_state = PARSER_STATE::PARSER_RECOVERED;
 }

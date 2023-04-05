@@ -93,6 +93,12 @@ class parser
     // Assumes simple error at current token
     void error_here(const std::string&);
 
+    // Assumes simple error is at current line
+    void error_line(const std::string&);
+
+    // Creates an error for the rest of the line
+    void error_line_remain(const std::string&);
+
     // Saves the position, and create a potential hint
     // All nodes will be pushed to the potential hint
     // unless another hint is tried, if so, the tried hint
@@ -105,6 +111,12 @@ class parser
 
     // Go back to original postion and delete the hint
     void cancel_try();
+
+    // Return true if in a state that stops the parser from parsing
+    bool is_errored();
+
+    // Tries to recover from error
+    void recover();
 
     std::vector<token>* tokens;
     std::vector<diagnostic> diagnostics;

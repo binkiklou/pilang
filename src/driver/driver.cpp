@@ -175,13 +175,25 @@ void driver::_dump_tree()
 
 void driver::_write_diagnostic(diagnostic& diag)
 {
-    print_error(diag.msg);
+    print_error(diag.m_msg);
+
     if(diag.m_show)
     {
+        // line length
+        unsigned int cursorl = diag.m_clength;
+
+        if(diag.m_cursor_line)
+        {
+            if(diag.m_loc.line-1>=0 && diag.m_loc.line-1<diag.m_loc.src_ptr->get_lines()->at(diag.m_loc.line-1).size())
+            {
+                cursorl = diag.m_loc.src_ptr->get_lines()->at(diag.m_loc.line-1).size() - (diag.m_loc.col-1);
+            }
+        }
+
         _write_src_view(
             diag.m_vlcount, 
-            diag.has_cursor,
-            diag.m_clength,
+            diag.m_has_cursor,
+            cursorl,
             diag.m_loc
         );
     }
