@@ -4,6 +4,10 @@
 
 std::string colored(const std::string& text, colors c)
 {
+    if(!print_args::has_color){
+        return text;
+    }
+
     std::string prefix = "\u001b[";
     switch(c)
     {

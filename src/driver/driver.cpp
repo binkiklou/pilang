@@ -45,7 +45,14 @@ void driver::start(source* src)
         // Should only allow dump for certain errors
         if(dump_syntax_tree)
         {
+            print("--- PARSE TREE DUMP ---");
             _dump_tree();
+            print("----------");
+        }
+
+        for(diagnostic& d : this->m_parser->diagnostics)
+        {
+            _write_diagnostic(d);
         }
 
         _delete_phases();
@@ -135,7 +142,18 @@ void driver::_dump_tokens()
 void driver::_dump_pnode(parser_node* pnode, unsigned int depth)
 {
     std::string txt;
-    txt = std::string("\t", depth);
+    txt = std::string(depth*3, ' ');
+    if(depth>0){
+        txt[(depth-1)*3] = '|';
+
+        for(int i = ((depth-1)*3)+1; i < txt.length(); i++){
+            txt[i] = '-';
+            if(i == txt.length() - 1){
+                txt[i] = '>';
+            }
+        }
+    }
+
     txt += pnode->get_node_str();
     print(txt);
     
@@ -152,7 +170,7 @@ void driver::_dump_tree()
     }
 
     print_verbose("Dumping syntax tree");
-    _dump_pnode(&this->m_parser->root, 0);
+    _dump_pnode(&this->m_parser->m_root, 0);
 }
 
 void driver::_write_diagnostic(diagnostic& diag)
