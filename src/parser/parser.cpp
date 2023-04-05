@@ -2,6 +2,8 @@
 
 #include "../shared/print.hpp"
 
+#include <memory>
+
 // --- NODES ---
 parser_node::parser_node()
 {
@@ -53,4 +55,42 @@ token parser::peek_back()
         print_verbose("Cannot peek back");
     }
     return tokens->at(_pos - 1);
+}
+
+bool parser::match(const TKN_TYPE& t)
+{
+    if(this->m_state != PARSER_STATE::PARSER_OK){
+        return false;
+    }
+
+    if(peek_back().m_type == t)
+    {
+        _pos++;
+        return true;
+    }
+    return false;
+}
+
+void parser::_add_hint_node(const std::string& h)
+{
+    if(_node_ptr == nullptr){
+        return;
+    }
+
+    hint_node* node = new  hint_node;
+    node->m_type = PNODE_TYPE::HINT_NODE;
+    node->m_hint = h;
+    _node_ptr->m_children.push_back(node);
+}
+
+void parser::_add_token_node(const token& t)
+{
+    if(_node_ptr == nullptr){
+        return;
+    }
+
+    token_node* node = new token_node;
+    node->m_type = PNODE_TYPE::TOKEN_NODE;
+    node->m_token = t;
+    _node_ptr->m_children.push_back(node);
 }

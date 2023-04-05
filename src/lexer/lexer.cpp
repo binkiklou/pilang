@@ -45,8 +45,24 @@ bool lexer::tokenize()
 void lexer::_make_error(const std::string& msg)
 {
     // Assume the error is at the current token
-    std::string prep = this->m_src->filename + ':' + std::to_string(this->_line) + ':' + std::to_string(this->_col);
-    print_error(prep + ' ' + msg);
+    //std::string prep = this->m_src->filename + ':' + std::to_string(this->_line) + ':' + std::to_string(this->_col);
+    //print_error(prep + ' ' + msg);
+    location loc;
+    loc.col = _col;
+    loc.line = _line;
+    loc.src_ptr = this->m_src;
+
+    diagnostic d;
+    d.m_type = lexing_diag;
+    d.m_level = error;    
+    d.msg = msg;
+    d.m_show = true;
+    d.m_vlcount = 0; // no other lines
+    d.has_cursor = true;
+    d.m_clength = 1; // 1 character cursor
+    d.m_loc = loc;
+    this->diagnostics.push_back(d);
+
     this->_good = false;
 }
 

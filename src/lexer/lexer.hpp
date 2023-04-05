@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../driver/diagnostic.hpp"
 #include "source.hpp"
-
 #include "token.hpp"
 
 class lexer
@@ -16,6 +16,8 @@ class lexer
     // although deleting the lexer currently also deletes this. But this
     // is easily changed.
     std::vector<token>* tokens = nullptr;
+
+    std::vector<diagnostic> diagnostics;
     
     bool tokenize();
     

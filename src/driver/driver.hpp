@@ -1,5 +1,6 @@
 #pragma once
 
+#include "diagnostic.hpp"
 #include "../lexer/source.hpp"
 #include "../lexer/lexer.hpp"
 #include "../parser/parser.hpp"
@@ -23,6 +24,9 @@ class driver
     void _delete_phases();
 
     void _dump_tokens();
+
+    void _write_diagnostic(diagnostic&);
+    void _write_src_view(unsigned int, bool, unsigned int, location);
 
     bool m_ok = false;
 

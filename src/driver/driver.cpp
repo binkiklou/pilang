@@ -20,6 +20,11 @@ void driver::start(source* src)
     // Lexer
     if(!this->m_lexer->tokenize())
     {
+        for(diagnostic& d : this->m_lexer->diagnostics)
+        {
+            _write_diagnostic(d);
+        }
+
         print_verbose("Tokenization failed, aborting compilation.");
         _delete_phases();
         return;
@@ -112,4 +117,51 @@ void driver::_dump_tokens()
             );
     }
     print("----------");
+}
+
+void driver::_write_diagnostic(diagnostic& diag)
+{
+    print_error(diag.msg);
+    if(diag.m_show)
+    {
+        _write_src_view(
+            diag.m_vlcount, 
+            diag.has_cursor,
+            diag.m_clength,
+            diag.m_loc
+        );
+    }
+}
+
+void driver::_write_src_view(unsigned int view_padding, bool has_cursor, unsigned int cursor_length, location loc)
+{
+    if(loc.src_ptr == nullptr)
+    {
+        print("Could not view source.");
+    }
+
+    unsigned int cursor_line = (loc.line-1);
+    unsigned int start_line = cursor_line - std::min(cursor_line, view_padding);
+    unsigned int end_line = cursor_line + std::min((unsigned int)loc.src_ptr->get_lines()->size() - cursor_line, view_padding);
+
+    print("-->" + loc.as_string());
+    for(int i = start_line; i <= end_line; i++)
+    {
+        std::string buffer = std::to_string(start_line);
+        buffer.resize(4, ' ');
+        print(buffer + "| " + loc.src_ptr->get_lines()->at(start_line));
+
+        if(has_cursor && i == cursor_line)
+        {
+            std::string txt;
+            for(int j = 0; j < (loc.col - 1) + 6; j++){
+                txt += " ";
+            }
+            for(int j = 0; j < cursor_length; j++)
+            {
+                txt += "^";
+            }
+            print(txt);
+        }
+    }
 }

@@ -14,7 +14,6 @@ class source
 
     void set_lines(std::vector<std::string>*);
     std::vector<std::string>* get_lines();
-    
     private:
     std::vector<std::string>* m_lines;
 };
