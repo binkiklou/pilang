@@ -18,6 +18,7 @@ class syntax
 
     bool get_scalar_arrow_left();
     bool get_scalar_arrow_right();
+    bool get_scalar_arrow_init();
     bool get_scalar_arrow_expr();
 
     bool get_datatype();

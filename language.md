@@ -8,7 +8,7 @@ The declaration must either hint or contain the size of the array.
 ```
 [3;3] # Array of size 3 x 3
 [foo] # Copy of existing array
-[{1,2},{3,4}] # Array literal
+[{{1,2},{3,4}}] # Array literal
 ```
 # Reshape Operator
 The reshape arrow(name should be changed) is the equivalent of the ``->`` arrow(*see Item manipulation*) for full arrays, and is used to reshape the right array to the left array's shape.
@@ -55,11 +55,11 @@ This simple example, demonstrate an array being created and all it's items being
 # 0 0 0 0 0
 ```
 
-The left-side of an arrow is an expression, which means that it can be much more powerful than a simple scalar. Paired with selection(see above), this can be used to emulate for loops.
+The right-side of an arrow is an expression, which means that it can be much more powerful than a simple scalar. Paired with selection(see above), this can be used to emulate for loops.
 
 This example shows an DIY range function, it sets the value to the index of the item.
 ```
-[5](index x)->x
+[5](x)->index(x)
 # 1 2 3 4 5
 ```
 

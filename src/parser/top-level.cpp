@@ -7,6 +7,7 @@
 void syntax::get_top_level()
 {
     if(get_vardecl()){}
+    else if(get_scalar_arrow_expr()){}
     else{_p->error_line_remain("Unrecognized top-level statement");}
 }
 

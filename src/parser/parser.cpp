@@ -123,9 +123,11 @@ bool parser::expect(const TKN_TYPE& t)
 
 void parser::error_here(const std::string& msg)
 {
+    _add_error_node();
+
     if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
     {
-        print_verbose("Ignoring error " + msg);
+        print_verbose("Ignoring error " + msg); 
         return;
     }
 
@@ -139,15 +141,14 @@ void parser::error_here(const std::string& msg)
     d.m_clength = peek_now().m_word.data.length();
     d.m_loc = peek_now().m_word.loc;
     this->diagnostics.push_back(d);
-
-    // Add error node to tree
-    _add_error_node();
     
     this->m_state = PARSER_STATE::PARSER_RECOVERING;
 }
 
 void parser::error_line(const std::string& msg)
 {
+    _add_error_node();
+
     if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
     {
         print_verbose("Ignoring error " + msg);
@@ -171,6 +172,8 @@ void parser::error_line(const std::string& msg)
 
 void parser::error_line_remain(const std::string& msg)
 {
+    _add_error_node();
+    
     if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
     {
         print_verbose("Ignoring error " + msg);
@@ -198,7 +201,6 @@ void parser::try_hint(const std::string& h)
     _node_ptr = n;
     _try_nodes.push(n);
     _try_pos.push(_pos);
-    print_verbose("Saving:" + std::to_string(_pos) + " (" + h + ")");
 }
 
 void parser::keep_hint()
@@ -218,13 +220,11 @@ void parser::keep_hint()
     _try_nodes.pop();
     _try_nodes.top()->m_children.push_back(ptr);
     _node_ptr = _try_nodes.top();
-    print_verbose("Kept" + std::to_string(_pos) + "; Removed " + std::to_string(_try_pos.top()));
     _try_pos.pop();
 }
 
 void parser::cancel_try()
 {
-    print_verbose(std::to_string(_pos)+"->"+std::to_string(_try_pos.top()) + " (" + _try_nodes.top()->m_hint + ")");
     _pos = _try_pos.top();
     _try_pos.pop();
     _try_nodes.pop();

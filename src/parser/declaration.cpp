@@ -153,7 +153,7 @@ bool syntax::get_vardecl()
     }
 
 
-    if(get_scalar_arrow_expr()){}
+    if(get_scalar_arrow_init()){}
     else if(get_arr_init()){}
     else
     {

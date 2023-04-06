@@ -82,9 +82,9 @@ bool syntax::get_scalar_arrow_right()
 }
 
 // left -> right
-bool syntax::get_scalar_arrow_expr()
+bool syntax::get_scalar_arrow_init()
 {
-    _p->try_hint("scalar_arrow_expr");
+    _p->try_hint("scalar_arrow_init");
     
     if(!get_scalar_arrow_left())
     {
@@ -103,6 +103,35 @@ bool syntax::get_scalar_arrow_expr()
     if(!get_scalar_arrow_right())
     {
         _p->error_line_remain("Invalid scalar right-side");
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+bool syntax::get_scalar_arrow_expr()
+{
+    _p->try_hint("scalar_arrow_expr");
+
+    if(!_p->match(IDENTIFIER))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!_p->match(SCALAR_ARROW))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    // expect to be a scalar arrow
+
+    if(!get_scalar_arrow_right())
+    {
+        _p->error_line_remain("Expected a right-side expression");
         _p->cancel_try();
         return false;
     }
