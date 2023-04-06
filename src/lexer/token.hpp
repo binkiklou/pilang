@@ -12,9 +12,7 @@ enum TKN_TYPE {
     SCALAR_ARROW, LEFT_BIG_ARROW, RIGHT_BIG_ARROW,
     EQUAL, GREATER, SMALLER,
 
-    // Keywords
-    KW_RANGE,
-
+    FORM, // arr scalar
     DATATYPE, IDENTIFIER,
 
     // Literals

@@ -384,6 +384,10 @@ bool lexer::_get_word()
         {
             tkn.m_type = TKN_TYPE::DATATYPE;
         }
+        else if(w.data == "arr" || w.data == "scalar")
+        {
+            tkn.m_type = TKN_TYPE::FORM;
+        }
         else if(w.data == "true" || w.data == "false")
         {
             tkn.m_type = TKN_TYPE::BOOL_LIT;

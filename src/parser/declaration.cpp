@@ -24,6 +24,28 @@ bool syntax::get_datatype()
     return true;
 }
 
+// form datatype
+bool syntax::get_typespec()
+{
+    _p->try_hint("typespec");
+
+    if(!_p->match(FORM))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!_p->match(DATATYPE))
+    {
+        _p->error_here("Datatype is required after a form.");
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;;
+}
+
 // 1;2;..
 bool syntax::get_arr_size()
 {
@@ -140,8 +162,17 @@ bool syntax::get_vardecl()
 {
     _p->try_hint("vardecl");
 
+    if(!get_typespec())
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    // Expect
+
     if(!_p->match(IDENTIFIER))
     {
+        _p->error_here("An identifier is required after a typespec");
         _p->cancel_try();
         return false;
     }

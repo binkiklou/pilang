@@ -22,6 +22,7 @@ class syntax
     bool get_scalar_arrow_expr();
 
     bool get_datatype();
+    bool get_typespec();
 
     bool get_arr_size();
     bool get_arr_copy();

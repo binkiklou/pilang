@@ -26,7 +26,7 @@ char const* token_names[] = {
     tknstr(EQUAL)
     tknstr(GREATER)
     tknstr(SMALLER)
-    tknstr(KW_RANGE)
+    tknstr(FORM)
     tknstr(DATATYPE)
     tknstr(IDENTIFIER)
     tknstr(BOOL_LIT)
