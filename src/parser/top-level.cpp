@@ -7,7 +7,6 @@
 void syntax::get_top_level()
 {
     if(get_vardecl()){}
-    else if(get_scalar_arrow_expr()){}
     else{_p->error_line_remain("Unrecognized top-level statement");}
 }
 
@@ -19,6 +18,10 @@ bool parser::parse()
     }
 
     print_verbose("Starting parse");
+
+    // Setup infinite recursion detection(hacky)
+    _visit_tracking = std::vector<unsigned int>(tokens->size());
+    for(unsigned int t : _visit_tracking) {t=0;}
 
     syntax s(this);
 

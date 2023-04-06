@@ -95,8 +95,27 @@ token parser::peek_back()
 
 bool parser::match(const TKN_TYPE& t)
 {
+
     if(this->m_state != PARSER_STATE::PARSER_OK && this->m_state != PARSER_STATE::PARSER_RECOVERED){
+        _visit_tracking[_pos]++;
+
+        // Gives  ~10 moves to exit parse loop
+        if(_pos >= 0 && _pos < _visit_tracking.size() && _visit_tracking[_pos] > 60){
+            print("Forcing exit.");
+            std::exit(-1);
+        }
+
         return false;
+    }
+
+    if(_pos >= 0 && _pos < _visit_tracking.size()){
+        _visit_tracking[_pos]++;
+
+        // Recurse limit
+        if(_visit_tracking[_pos] > 50){
+            print_error("Parser stuck at " + peek_now().m_word.loc.as_string());
+            this->m_state = PARSER_STATE::PARSER_UNRECOVERABLE;
+        }
     }
 
     if(peek_now().m_type == t)

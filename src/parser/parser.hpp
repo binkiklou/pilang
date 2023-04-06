@@ -125,6 +125,10 @@ class parser
     private:
     PARSER_STATE m_state;
 
+    // Number of times each token has been visited
+    // Used  for recursion detection(very hacky)
+    std::vector<unsigned int> _visit_tracking;
+
     parser_node* _node_ptr;
     parser_node* _base_node_ptr;
 

@@ -8,7 +8,8 @@ This is the most basic one, and is used to allocate a new array object in memory
 
 ## Init by shape
 
-Size inition will allocate an array of the specified shape and size, but by itself, will not set their value. Shapes can be defined as ``expressions`` separated by ``,``. The expression must always return an ``int`` value, or a value that can be cast to int. 
+Size inition will allocate an array of the specified shape and size, but by itself, will not set their value. Shapes can be defined as ``expressions`` separated by ``l``. The expression must always return an ``int`` value, or a value that can be cast to int.
+
 ``
 int[2;2]
 ``

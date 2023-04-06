@@ -7,7 +7,7 @@ of operations is done in the AST builder.
 #include "syntax.hpp"
 
 // Const_value, so any literal and nothing else
-bool syntax::get_const_value()
+bool syntax::get_scalar_value()
 {
     _p->try_hint("const_value");
 
@@ -27,11 +27,11 @@ bool syntax::get_const_value()
 }
 
 //* Expression could be a single term
-bool syntax::get_const_expr()
+bool syntax::get_scalar_expr()
 {
     _p->try_hint("const_expr");
 
-    if(!get_const_value())
+    if(!get_scalar_value())
     {
         _p->cancel_try();
         return false;
@@ -39,7 +39,7 @@ bool syntax::get_const_expr()
 
     while(_p->match(MATH_OP))
     {
-        if(!get_const_value())
+        if(!get_scalar_value())
         {
             _p->error_here("Expected term after operator.");
             _p->cancel_try();
@@ -51,13 +51,12 @@ bool syntax::get_const_expr()
     return true;
 }
 
-// arr_init
+// array_expr
 bool syntax::get_scalar_arrow_left()
 {
     _p->try_hint("scalar_arrow_left");
 
-    if(!get_arr_init())
-    {
+    if(!get_array_expr()){
         _p->cancel_try();
         return false;
     }
@@ -66,13 +65,12 @@ bool syntax::get_scalar_arrow_left()
     return true;
 }
 
-// const_expr
+// scalar_expr
 bool syntax::get_scalar_arrow_right()
 {
     _p->try_hint("scalar_arrow_right");
 
-    if(!get_const_expr())
-    {
+    if(!get_scalar_expr()){
         _p->cancel_try();
         return false;
     }
@@ -81,28 +79,25 @@ bool syntax::get_scalar_arrow_right()
     return true;
 }
 
-// left -> right
-bool syntax::get_scalar_arrow_init()
+// scalar_arrow_left -> scalar_arrow_right
+bool syntax::get_scalar_arrow_expr()
 {
-    _p->try_hint("scalar_arrow_init");
-    
-    if(!get_scalar_arrow_left())
-    {
+    _p->try_hint("scalar_expr");
+
+    if(!get_scalar_arrow_left()){
         _p->cancel_try();
         return false;
     }
 
-    if(!_p->match(SCALAR_ARROW))
-    {
+    if(!_p->match(SCALAR_ARROW)){
         _p->cancel_try();
         return false;
     }
 
     // Expect
 
-    if(!get_scalar_arrow_right())
-    {
-        _p->error_line_remain("Invalid scalar right-side");
+    if(!get_scalar_arrow_right()){
+        _p->error_line_remain("Right-side of a scalar arrow must be valid.");
         _p->cancel_try();
         return false;
     }
@@ -111,31 +106,62 @@ bool syntax::get_scalar_arrow_init()
     return true;
 }
 
-bool syntax::get_scalar_arrow_expr()
+// Any expression that must return an array
+// ---
+// reshape_arrow_expr
+// scalar_arrow_expr
+// array_select
+// array_init
+bool syntax::get_array_expr_term()
 {
-    _p->try_hint("scalar_arrow_expr");
+    _p->try_hint("array_expr_term");
 
-    if(!_p->match(IDENTIFIER))
+    if(get_scalar_arrow_expr()){}
+    else if(get_arr_init()){}
+    else
     {
         _p->cancel_try();
         return false;
     }
 
-    if(!_p->match(SCALAR_ARROW))
+    _p->keep_hint();
+    return true;
+}
+
+// Array expressions are any expression that involve one array,
+// it can be a single term, or operation.
+// ---
+bool syntax::get_array_expr()
+{
+    _p->try_hint("array_expr");
+
+    bool enclosed = false;
+
+    if(_p->match(LPAREN))
     {
+        enclosed =  true;
+    }
+
+    if(!get_array_expr_term()){
         _p->cancel_try();
         return false;
     }
 
-    // expect to be a scalar arrow
-
-    if(!get_scalar_arrow_right())
-    {
-        _p->error_line_remain("Expected a right-side expression");
-        _p->cancel_try();
-        return false;
+    while(_p->match(MATH_OP)){
+        if(!get_array_expr_term()){
+            _p->error_here("Expected a valid array term after operation");
+            _p->cancel_try();
+            return false;
+        }
     }
 
+    if(enclosed && !_p->match(RPAREN))
+    {
+        _p->error_here("Enclosed array expression must be closed.");
+        _p->cancel_try();
+        return  false;
+    }
+    
     _p->keep_hint();
     return true;
 }

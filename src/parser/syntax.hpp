@@ -13,13 +13,15 @@ class syntax
     public:
     syntax(parser*);
 
-    bool get_const_value();
-    bool get_const_expr();
+    bool get_scalar_value();
+    bool get_scalar_expr();
 
-    bool get_scalar_arrow_left();
     bool get_scalar_arrow_right();
-    bool get_scalar_arrow_init();
+    bool get_scalar_arrow_left();
     bool get_scalar_arrow_expr();
+
+    bool get_array_expr_term();
+    bool get_array_expr();
 
     bool get_datatype();
     bool get_typespec();

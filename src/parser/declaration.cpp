@@ -51,7 +51,7 @@ bool syntax::get_arr_size()
 {
     _p->try_hint("arr_size");
 
-    if(!get_const_expr())
+    if(!get_scalar_expr())
     {
         _p->cancel_try();
         return false;   
@@ -59,7 +59,7 @@ bool syntax::get_arr_size()
 
     while(_p->match(SEMICOLON))
     {
-        if(!get_const_expr())
+        if(!get_scalar_expr())
         {
             _p->cancel_try();
             return false;
@@ -96,14 +96,14 @@ bool syntax::get_arr_lit()
         return false;
     }
 
-    if(!get_const_value()){
+    if(!get_scalar_expr()){
         _p->cancel_try();
         return false;
     }
 
     while(_p->match(COMMA))
     {
-        if(!get_const_value()){
+        if(!get_scalar_expr()){
             _p->error_here("Expected a value");
             _p->cancel_try();
             return false;
@@ -183,9 +183,7 @@ bool syntax::get_vardecl()
         return false;
     }
 
-
-    if(get_scalar_arrow_init()){}
-    else if(get_arr_init()){}
+    if(get_array_expr()) {}
     else
     {
         _p->error_line_remain("Expected valid array declaration");
