@@ -1,9 +1,17 @@
+opts = Variables()
+opts.Add(BoolVariable('debug_build', 'If the build is debug', False))
+
 env = Environment(
+    variables=opts,
     CXX='clang++',
     CPPPATH='lib/',
     LIBPATH=['.'],
-    SCONS_CXX_STANDARD='c++14'
+    SCONS_CXX_STANDARD='c++14',
+    CXXFLAGS=''
 )
+
+if env['debug_build']:
+    env.Append(CXXFLAGS='-g')
 
 env.StaticLibrary('driver', Glob('src/driver/*.cpp'))
 env.StaticLibrary('lexer', Glob('src/lexer/*.cpp'))
