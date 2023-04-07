@@ -16,7 +16,8 @@ bool syntax::get_scalar_value()
         _p->match(BOOL_LIT) || 
         _p->match(CHAR_LIT) ||
         _p->match(FLOAT_LIT) ||
-        _p->match(DOUBLE_LIT))
+        _p->match(DOUBLE_LIT)|| 
+        _p->match(IDENTIFIER))
     {
         _p->keep_hint();
         return true;
@@ -41,7 +42,7 @@ bool syntax::get_scalar_expr()
     {
         if(!get_scalar_value())
         {
-            _p->error_here("Expected term after operator.");
+            _p->error_here("Expected scalar term after operator.");
             _p->cancel_try();
             return false;
         }
@@ -269,13 +270,6 @@ bool syntax::get_array_expr()
 {
     _p->try_hint("array_expr");
 
-    //bool enclosed = false;
-
-    //if(_p->match(LPAREN))
-    //{
-    //    enclosed =  true;
-    //}
-
     if(!get_array_expr_term()){
         _p->cancel_try();
         return false;
@@ -288,13 +282,6 @@ bool syntax::get_array_expr()
             return false;
         }
     }
-
-    //if(enclosed && !_p->match(RPAREN))
-    //{
-    //    _p->error_here("Enclosed array expression must be closed.");
-    //    _p->cancel_try();
-    //    return  false;
-    //}
     
     _p->keep_hint();
     return true;

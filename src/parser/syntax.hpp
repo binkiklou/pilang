@@ -36,6 +36,8 @@ class syntax
     bool get_arr_init();
 
     bool get_vardecl();
+
+    bool get_assign();
  
     void get_top_level();
     private:

@@ -4,9 +4,39 @@
 
 #include "../shared/print.hpp"
 
+bool syntax::get_assign()
+{
+    _p->try_hint("assignement");
+
+    if(!_p->match(IDENTIFIER))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!_p->match(COLON))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    // expect
+
+    if(!get_array_expr())
+    {
+        _p->error_here("Expected an array expression for assignement.");
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
 void syntax::get_top_level()
 {
     if(get_vardecl()){}
+    else if(get_assign()){}
     else{_p->error_line_remain("Unrecognized top-level statement");}
 }
 

@@ -168,8 +168,6 @@ bool syntax::get_vardecl()
         return false;
     }
 
-    // Expect
-
     if(!_p->match(IDENTIFIER))
     {
         _p->error_here("An identifier is required after a typespec");
@@ -177,21 +175,16 @@ bool syntax::get_vardecl()
         return false;
     }
 
-    if(!_p->match(COLON))
+    if(_p->match(COLON))
     {
-        _p->cancel_try();
-        return false;
+        if(get_array_expr()) {}
+        else
+        {
+            _p->error_line_remain("Expected valid array declaration");
+            _p->cancel_try();
+            return false;
+        }
     }
-
-    if(get_array_expr()) {}
-    else
-    {
-        _p->error_line_remain("Expected valid array declaration");
-        _p->cancel_try();
-        return false;
-    }
-
-    print_verbose("keeping vdecl");
 
     _p->keep_hint();
     return true;
