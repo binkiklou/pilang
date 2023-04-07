@@ -9,6 +9,7 @@ bool syntax::get_call_arg()
     // Temporary
     if(_p->match(STRING_LIT)){}
     else if(_p->match(CHAR_LIT)){}
+    else if(get_call()){}
     else if(get_scalar_expr()){}
     else
     {
