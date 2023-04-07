@@ -133,7 +133,7 @@ bool parser::expect(const TKN_TYPE& t)
     {
         error_here(
             "Unexpected token: "+tkn_type_as_string(peek_now().m_type)+
-            "expected: "+tkn_type_as_string(t)+"."
+            " expected: "+tkn_type_as_string(t)+"."
             );
         return false;
     }

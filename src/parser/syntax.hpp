@@ -20,6 +20,9 @@ class syntax
     bool get_scalar_arrow_left();
     bool get_scalar_arrow_expr();
 
+    bool get_selector();
+    bool get_selection();
+
     bool get_array_expr_term();
     bool get_array_expr();
 

@@ -121,9 +121,9 @@ bool syntax::get_arr_lit()
     return true;
 }
 
-// [arr_size]
-// [arr_copy]
-// [arr_lit]
+// datatype[arr_size]
+// datatype[arr_copy]
+// datatype[arr_lit]
 bool syntax::get_arr_init()
 {
     _p->try_hint("arr_init");
