@@ -161,15 +161,13 @@ bool syntax::get_param_list()
         CANCEL_EXIT;
     }
 
-    if(!get_param()){
-        CANCEL_EXIT;
-    }
-
-    while(_p->match(COMMA))
-    {
-        if(!get_param()){
-            _p->error_here("A parameter must be placed after a comma.");
-            ERROR_EXIT;
+    if(get_param()){
+        while(_p->match(COMMA))
+        {
+            if(!get_param()){
+                _p->error_here("A parameter must be placed after a comma.");
+                ERROR_EXIT;
+            }
         }
     }
 

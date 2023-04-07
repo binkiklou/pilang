@@ -68,6 +68,15 @@ class syntax
     bool get_proc_call();
     bool get_proc();
 
+    bool get_attr();
+    bool get_attr_field();
+
+    bool get_impl_fn();
+    bool get_impl();
+    bool get_impl_field();
+
+    bool get_typedef();
+
     bool get_entry();
 
     void get_statement();

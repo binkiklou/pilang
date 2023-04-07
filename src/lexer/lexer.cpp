@@ -434,7 +434,7 @@ bool lexer::_get_word()
             tkn.m_type = TKN_TYPE::TYPE_OP;
         }
         // Datatypes
-        else if(w.data == "int" || w.data == "bool" || w.data == "double" || w.data == "float")
+        else if(w.data == "int" || w.data == "bool" || w.data == "double" || w.data == "float" || w.data == "char")
         {
             tkn.m_type = TKN_TYPE::DATATYPE;
         }
