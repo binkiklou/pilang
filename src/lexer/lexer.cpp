@@ -426,6 +426,10 @@ bool lexer::_get_word()
         {
             tkn.m_type = TKN_TYPE::FORM;
         }
+        else if(w.data == "index")
+        {
+            tkn.m_type = TKN_TYPE::SCALAR_OPERATOR;
+        }
         else if(w.data == "true" || w.data == "false")
         {
             tkn.m_type = TKN_TYPE::BOOL_LIT;

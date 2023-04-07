@@ -32,7 +32,9 @@ bool syntax::get_scalar_expr()
 {
     _p->try_hint("scalar_expr");
 
-    if(!get_scalar_value())
+    if(get_scalar_value()){}
+    else if(get_scalar_operation()){}
+    else
     {
         _p->cancel_try();
         return false;
@@ -40,12 +42,49 @@ bool syntax::get_scalar_expr()
 
     while(_p->match(MATH_OP))
     {
-        if(!get_scalar_value())
+        if(get_scalar_value()){}
+        else if(get_scalar_operation()){}
+        else
         {
             _p->error_here("Expected scalar term after operator.");
             _p->cancel_try();
             return false;
         }
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+// scalar_operator x
+// scalar_operator(x)
+bool syntax::get_scalar_operation()
+{
+    _p->try_hint("scalar_operation");
+
+    if(!_p->match(SCALAR_OPERATOR))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    // expect
+
+    bool enclosed = false;
+
+    if(_p->match(LPAREN)) {enclosed = true;}
+
+    if(!_p->match(IDENTIFIER))
+    {
+        _p->error_here("Expected an identifier after an operator.");
+        _p->cancel_try();
+        return false;
+    }
+
+    if(enclosed && !_p->expect(RPAREN))
+    {
+        _p->cancel_try();
+        return false;
     }
 
     _p->keep_hint();

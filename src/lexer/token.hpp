@@ -15,7 +15,7 @@ enum TKN_TYPE {
     // Keywords
     KW_ENTRY, KW_PROC, KW_FN,
 
-    FORM, // arr scalar
+    SCALAR_OPERATOR, FORM, // arr scalar
     DATATYPE, IDENTIFIER,
 
     // Literals

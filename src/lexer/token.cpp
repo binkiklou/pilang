@@ -32,6 +32,7 @@ char const* token_names[] = {
     tknstr(KW_ENTRY)
     tknstr(KW_PROC)
     tknstr(KW_FN)
+    tknstr(SCALAR_OPERATOR)
     tknstr(FORM)
     tknstr(DATATYPE)
     tknstr(IDENTIFIER)

@@ -18,6 +18,8 @@ class syntax
 
     bool get_scalar_value();
     bool get_scalar_expr();
+    
+    bool get_scalar_operation();
 
     bool get_scalar_arrow_right();
     bool get_scalar_arrow_left();
@@ -39,7 +41,12 @@ class syntax
 
     bool get_block();
 
+    bool get_call_arg();
+    bool get_call_arg_list();
+
+    bool get_proc_call();
     bool get_proc();
+
     bool get_entry();
 
     void get_statement();
