@@ -26,6 +26,8 @@ Init by copy, is what it says, it copies an existing object, it is of the syntax
 
 Definitevely the most cool looking part of the language, are the arrows ``->`` and ``=>``. These operations can be used with other operations to behave like loops.
 
+> Note: Unless it is an ``arr_init``, the left side of an arrow must always be enclosed with parenthesis.
+
 ## Scalar Arrow
 
 The scalar arrow `->`, is used to set to a scalar. If applied to an array, it will define each elements of that array to the specifed scalar, unless a selector is applied.
@@ -41,7 +43,7 @@ The reshape arrow `=>`, sets an array's value to another array's. It also reshap
 The right-side must be an ``array_expression``(any expression that results into an array) and the left-side must be a one dimensional int array, where each element is equal to a dimension. It is not an init by shape array, because this way saves more memory, and also makes it possible to have determine the size to reshape at runtime.
 
 ```
-arr int cube:range(3*3)=>int[{3;3}]
+arr int cube:(range(3*3))=>[3;3]
 ```
 
 # Selection

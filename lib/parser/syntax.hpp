@@ -36,6 +36,10 @@ class syntax
     bool get_scalar_arrow_left();
     bool get_scalar_arrow_expr();
 
+    bool get_array_arrow_right();
+    bool get_array_arrow_left();
+    bool get_array_arrow_expr();
+
     bool get_selector();
     bool get_selection();
 

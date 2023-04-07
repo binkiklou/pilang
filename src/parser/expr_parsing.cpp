@@ -146,6 +146,69 @@ bool syntax::get_scalar_arrow_expr()
     MATCH_EXIT;
 }
 
+// [arr_shape]
+bool syntax::get_array_arrow_right()
+{
+    HINT_START("array_arrow_right");
+
+    if(!_p->match(LBRACKET)){
+        CANCEL_EXIT;
+    }
+
+    if(!get_arr_size()){
+        CANCEL_EXIT;
+    }
+
+    if(!_p->expect(RBRACKET)){
+        ERROR_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
+// (arr_expr)
+bool syntax::get_array_arrow_left()
+{
+    HINT_START("array_arrow_left");
+
+    if(!_p->match(LPAREN)){
+        CANCEL_EXIT;
+    }
+
+    if(!get_array_expr()){
+        CANCEL_EXIT;
+    }
+
+    if(!_p->expect(RPAREN)){
+        ERROR_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
+// array_arrow_left => array_arrow_right
+bool syntax::get_array_arrow_expr()
+{
+    HINT_START("array_arrow_expr");
+
+    if(!get_array_arrow_left()){
+        CANCEL_EXIT;
+    }
+
+    if(!_p->match(RIGHT_BIG_ARROW)){
+        CANCEL_EXIT;
+    }
+
+    // Expect
+
+    if(!get_array_arrow_right()){
+        _p->error_line_remain("Expected a valid right-side for reshape arrow.");
+        ERROR_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
 // scalar_value
 // {scalar_value}:scalar_value
 bool syntax::get_selector()
@@ -241,7 +304,7 @@ bool syntax::get_array_expr_term()
 {
     HINT_START("array_expr_term");
 
-    if(!get_scalar_arrow_expr())
+    if(!get_array_arrow_expr() && !get_scalar_arrow_expr())
     {
         // Parenthesis creates a sub-expression, if the parenthesis is
         // not part of the scalar-arrow-expression
