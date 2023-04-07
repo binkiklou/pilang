@@ -54,6 +54,11 @@ class syntax
     bool get_assign();
     bool get_vardecl();
 
+    bool get_param();
+    bool get_param_list();
+
+    bool get_fndecl();
+
     bool get_block();
 
     bool get_call_arg();

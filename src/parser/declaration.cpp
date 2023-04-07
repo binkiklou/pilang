@@ -136,6 +136,89 @@ bool syntax::get_arr_init()
     MATCH_EXIT;
 }
 
+// typespec ident
+bool syntax::get_param()
+{
+    HINT_START("param");
+
+    if(!get_typespec()){
+        CANCEL_EXIT;
+    }
+
+    if(!_p->match(IDENTIFIER)){
+        CANCEL_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
+// (param, param, ...)
+bool syntax::get_param_list()
+{
+    HINT_START("param_list");
+
+    if(!_p->match(LPAREN)){
+        CANCEL_EXIT;
+    }
+
+    if(!get_param()){
+        CANCEL_EXIT;
+    }
+
+    while(_p->match(COMMA))
+    {
+        if(!get_param()){
+            _p->error_here("A parameter must be placed after a comma.");
+            ERROR_EXIT;
+        }
+    }
+
+    if(!_p->match(RPAREN)){
+        CANCEL_EXIT;
+    }
+
+
+    MATCH_EXIT;
+}
+
+// fn typespec identifier param_list : array_expr
+bool syntax::get_fndecl()
+{
+    HINT_START("fndecl");
+
+    if(!_p->match(KW_FN)){
+        CANCEL_EXIT;
+    }
+
+    // expect
+
+    if(!get_typespec()){
+        _p->error_here("Typespecification is expected after the fn Keyword.");
+        ERROR_EXIT;
+    }
+
+    if(!_p->match(IDENTIFIER)){
+        _p->error_here("Function declaration need an identifier.");
+        ERROR_EXIT;
+    }
+
+    if(!get_param_list()){
+        _p->error_here("Function Declaration needs parameters");
+        ERROR_EXIT;
+    }
+
+    if(!_p->expect(COLON)){
+        ERROR_EXIT
+    }
+    
+    if(!get_array_expr()){
+        _p->error_here("Function Declaration needs an expression");
+        ERROR_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
 // ident : arr_init
 // ident : arrow_expr
 bool syntax::get_vardecl()

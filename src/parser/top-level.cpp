@@ -103,6 +103,7 @@ void syntax::get_top_level()
 { 
     if(get_entry()){}
     else if(get_proc()){}
+    else if(get_fndecl()){}
     else{_p->error_line("Unrecognized top-level statement");}
 }
 
