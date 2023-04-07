@@ -13,6 +13,9 @@ class syntax
     public:
     syntax(parser*);
 
+    bool get_datatype();
+    bool get_typespec();
+
     bool get_scalar_value();
     bool get_scalar_expr();
 
@@ -26,19 +29,20 @@ class syntax
     bool get_array_expr_term();
     bool get_array_expr();
 
-    bool get_datatype();
-    bool get_typespec();
-
     bool get_arr_size();
     bool get_arr_copy();
     bool get_arr_lit();
-
     bool get_arr_init();
 
+    bool get_assign();
     bool get_vardecl();
 
-    bool get_assign();
- 
+    bool get_block();
+
+    bool get_proc();
+    bool get_entry();
+
+    void get_statement();
     void get_top_level();
     private:
     parser* _p;

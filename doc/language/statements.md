@@ -50,3 +50,17 @@ Procedures are called using the ``%`` symbol.
 ```
 %print("Hello, World!")
 ```
+
+# Entry 
+
+Entry is the entry-point of the program. It behaves like a procedure, but only one instance of entry can exist.
+
+```
+entry {...}
+```
+
+Optionally, the entry procedure can have arguments.
+
+```
+entry(arr string a) {...}
+```

@@ -33,11 +33,82 @@ bool syntax::get_assign()
     return true;
 }
 
-void syntax::get_top_level()
+// {...}
+bool syntax::get_block()
+{
+    _p->try_hint("block");
+
+    if(!_p->match(LBRACE))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    while(!_p->match(RBRACE) && !_p->is_errored())
+    {
+        get_statement();
+
+        if(_p->is_errored()){
+            _p->recover();
+        }
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+bool syntax::get_proc()
+{
+    _p->try_hint("proc");
+
+    if(!_p->match(KW_PROC))
+    {
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!get_block()){
+        _p->error_here("Block is expected after a proc");
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+// entry block
+bool syntax::get_entry()
+{
+    _p->try_hint("entry");
+
+    if(!_p->match(KW_ENTRY)){
+        _p->cancel_try();
+        return false;
+    }
+
+    if(!get_block()){
+        _p->error_here("Block is expected after an entry");
+        _p->cancel_try();
+        return false;
+    }
+
+    _p->keep_hint();
+    return true;
+}
+
+void syntax::get_statement()
 {
     if(get_vardecl()){}
     else if(get_assign()){}
-    else{_p->error_line_remain("Unrecognized top-level statement");}
+    else{_p->error_line_remain("Unrecognized statement");}
+}
+
+void syntax::get_top_level()
+{ 
+    if(get_entry()){}
+    else if(get_proc()){}
+    else{_p->error_line("Unrecognized top-level statement");}
 }
 
 bool parser::parse()

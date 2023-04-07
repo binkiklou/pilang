@@ -380,7 +380,21 @@ bool lexer::_get_word()
         tkn.m_word = w;
         tkn.m_type = TKN_TYPE::UNKNOWN;
 
-        if(w.data == "int" || w.data == "bool" || w.data == "double" || w.data == "float")
+        // Keywords
+        if(w.data == "entry")
+        {
+            tkn.m_type = TKN_TYPE::KW_ENTRY;
+        }
+        else if(w.data == "proc")
+        {
+            tkn.m_type = TKN_TYPE::KW_PROC;
+        }
+        else if(w.data == "fn")
+        {
+            tkn.m_type = TKN_TYPE::KW_FN;
+        }
+        // Datatypes
+        else if(w.data == "int" || w.data == "bool" || w.data == "double" || w.data == "float")
         {
             tkn.m_type = TKN_TYPE::DATATYPE;
         }
