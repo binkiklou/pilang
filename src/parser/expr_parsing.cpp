@@ -235,7 +235,7 @@ bool syntax::get_selection()
 // reshape_arrow_expr
 // scalar_arrow_expr
 // (array_expr)
-// array_select
+// call
 // array_init
 bool syntax::get_array_expr_term()
 {
@@ -255,6 +255,7 @@ bool syntax::get_array_expr_term()
                 ERROR_EXIT;
             }
         }
+        else if(get_call()){}
         else if(get_arr_init()){}
         else
         {

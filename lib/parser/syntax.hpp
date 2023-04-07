@@ -54,6 +54,7 @@ class syntax
 
     bool get_call_arg();
     bool get_call_arg_list();
+    bool get_call();
 
     bool get_proc_call();
     bool get_proc();

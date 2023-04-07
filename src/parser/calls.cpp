@@ -9,7 +9,7 @@ bool syntax::get_call_arg()
     // Temporary
     if(_p->match(STRING_LIT)){}
     else if(_p->match(CHAR_LIT)){}
-    else if(get_scalar_value()){}
+    else if(get_scalar_expr()){}
     else
     {
         CANCEL_EXIT;
@@ -46,6 +46,23 @@ bool syntax::get_call_arg_list()
     MATCH_EXIT;
 }
 
+// identifier call_arg_list
+bool syntax::get_call()
+{
+    HINT_START("call");
+
+    if(!_p->match(IDENTIFIER)){
+        CANCEL_EXIT;
+    }
+
+    if(!get_call_arg_list()){
+        CANCEL_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
+// %identifier call_arg_list
 bool syntax::get_proc_call()
 {
     HINT_START("proc_call");

@@ -5,3 +5,4 @@ pilc
 .sconsign.dblite
 *.o
 *.a
+test.pi
