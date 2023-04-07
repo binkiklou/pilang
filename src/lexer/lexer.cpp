@@ -417,6 +417,22 @@ bool lexer::_get_word()
         {
             tkn.m_type = TKN_TYPE::KW_FN;
         }
+        else if(w.data == "typedef")
+        {
+            tkn.m_type = TKN_TYPE::KW_TYPEDEF;
+        }
+        else if(w.data == "attr")
+        {
+            tkn.m_type = TKN_TYPE::KW_ATTR;
+        }
+        else if(w.data == "impl")
+        {
+            tkn.m_type = TKN_TYPE::KW_IMPL;
+        }
+        else if(w.data == "new" || w.data == "delete")
+        {
+            tkn.m_type = TKN_TYPE::TYPE_OP;
+        }
         // Datatypes
         else if(w.data == "int" || w.data == "bool" || w.data == "double" || w.data == "float")
         {

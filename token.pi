@@ -1,0 +1,10 @@
+typedef token
+{
+    attr{
+        arr char word
+        scalar int id
+    }
+    impl{
+        fn new word():char[0]
+    }
+}
