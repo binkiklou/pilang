@@ -57,16 +57,14 @@ bool syntax::get_proc()
 
     if(!_p->match(KW_PROC))
     {
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     _p->warning_here("The implementation of procedures is incomplete");
 
     if(!get_block()){
         _p->error_here("Block is expected after a proc");
-        _p->cancel_try();
-        return false;
+        ERROR_EXIT;
     }
 
     MATCH_EXIT;
@@ -91,6 +89,24 @@ bool syntax::get_entry()
     MATCH_EXIT;
 }
 
+// import string_lit
+bool syntax::get_import()
+{
+    HINT_START("import");
+
+    if(!_p->match(KW_IMPORT))
+    {
+        CANCEL_EXIT;
+    }
+
+    if(!_p->match(STRING_LIT))
+    {
+        CANCEL_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
 void syntax::get_statement()
 {
     if(get_vardecl()){}
@@ -100,8 +116,9 @@ void syntax::get_statement()
 }
 
 void syntax::get_top_level()
-{ 
-    if(get_entry()){}
+{
+    if(get_import()){}
+    else if(get_entry()){}
     else if(get_proc()){}
     else if(get_fndecl()){}
     else if(get_typedef()){}

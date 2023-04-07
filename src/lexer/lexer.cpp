@@ -417,6 +417,10 @@ bool lexer::_get_word()
         {
             tkn.m_type = TKN_TYPE::KW_FN;
         }
+        else if(w.data == "import")
+        {
+            tkn.m_type = TKN_TYPE::KW_IMPORT;
+        }
         else if(w.data == "typedef")
         {
             tkn.m_type = TKN_TYPE::KW_TYPEDEF;

@@ -79,6 +79,8 @@ class syntax
 
     bool get_entry();
 
+    bool get_import();
+
     void get_statement();
     void get_top_level();
     private:

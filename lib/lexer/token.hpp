@@ -13,7 +13,9 @@ enum TKN_TYPE {
     EQUAL, GREATER, SMALLER,
 
     // Keywords
-    KW_ENTRY, KW_PROC, KW_FN, KW_TYPEDEF, KW_ATTR, KW_IMPL,
+    KW_IMPORT,
+    KW_ENTRY, KW_PROC, KW_FN, 
+    KW_TYPEDEF, KW_ATTR, KW_IMPL,
 
     SCALAR_OPERATOR, FORM, // arr scalar
     TYPE_OP, // new delete

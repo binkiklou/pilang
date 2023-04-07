@@ -29,6 +29,7 @@ char const* token_names[] = {
     tknstr(EQUAL)
     tknstr(GREATER)
     tknstr(SMALLER)
+    tknstr(KW_IMPORT)
     tknstr(KW_ENTRY)
     tknstr(KW_PROC)
     tknstr(KW_FN)
