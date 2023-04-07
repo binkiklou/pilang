@@ -8,6 +8,9 @@
 char const* token_names[] = {
     tknstr(UNKNOWN)
     tknstr(MATH_OP)
+    tknstr(PERCENT)
+    tknstr(DOLLAR)
+    tknstr(AT)
     tknstr(LBRACKET)
     tknstr(RBRACKET)
     tknstr(LBRACE)

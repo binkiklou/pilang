@@ -157,7 +157,9 @@ bool lexer::_get_symbol()
         SINGLE_CHAR_SYMBOL('*',TKN_TYPE::MATH_OP)
         SINGLE_CHAR_SYMBOL('-',TKN_TYPE::MATH_OP) // Could be begining of an arrow
         SINGLE_CHAR_SYMBOL('^',TKN_TYPE::MATH_OP)
-        SINGLE_CHAR_SYMBOL('%',TKN_TYPE::MATH_OP) // Not sure if modulo will be in language
+        SINGLE_CHAR_SYMBOL('%',TKN_TYPE::PERCENT)
+        SINGLE_CHAR_SYMBOL('$',TKN_TYPE::DOLLAR)
+        SINGLE_CHAR_SYMBOL('@',TKN_TYPE::AT)
         SINGLE_CHAR_SYMBOL('[',TKN_TYPE::LBRACKET)
         SINGLE_CHAR_SYMBOL(']',TKN_TYPE::RBRACKET)
         SINGLE_CHAR_SYMBOL('{',TKN_TYPE::LBRACE)
@@ -284,13 +286,35 @@ bool lexer::_get_char_lit()
 bool lexer::_get_string_lit()
 {
     char& c = _content[_position];
-
+    
     if(c == '"')
     {
-        _make_error("String literals are not implemented yet.");
+        _next();
+
+        token tkn;
+        tkn.m_word.loc = _get_loc();
+        tkn.m_type = TKN_TYPE::STRING_LIT;
+
+        tkn.m_word.data += '"';
+
+        while(_position < _content.size() && _content[_position] != '"'){
+            if(_content[_position] == '\n'){
+                _make_error("Strings cannot be multiline");
+                return true;
+            }
+
+            tkn.m_word.data += _content[_position];
+            _next();
+        }
+
+        tkn.m_word.data += '"';
+
+        _add_token(tkn);
+        _next();
+
         return true;
     }
-
+    
     return false;
 }
 
