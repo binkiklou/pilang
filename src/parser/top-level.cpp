@@ -6,18 +6,16 @@
 
 bool syntax::get_assign()
 {
-    _p->try_hint("assignement");
+    HINT_START("assignement");
 
     if(!_p->match(IDENTIFIER))
     {
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     if(!_p->match(COLON))
     {
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     // expect
@@ -25,23 +23,20 @@ bool syntax::get_assign()
     if(!get_array_expr())
     {
         _p->error_here("Expected an array expression for assignement.");
-        _p->cancel_try();
-        return false;
+        ERROR_EXIT;
     }
 
-    _p->keep_hint();
-    return true;
+    MATCH_EXIT;
 }
 
 // {...}
 bool syntax::get_block()
 {
-    _p->try_hint("block");
+    HINT_START("block");
 
     if(!_p->match(LBRACE))
     {
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     while(!_p->match(RBRACE) && !_p->is_errored())
@@ -52,14 +47,13 @@ bool syntax::get_block()
             _p->recover();
         }
     }
-
-    _p->keep_hint();
-    return true;
+    
+    MATCH_EXIT;
 }
 
 bool syntax::get_proc()
 {
-    _p->try_hint("proc");
+    HINT_START("proc");
 
     if(!_p->match(KW_PROC))
     {
@@ -75,14 +69,13 @@ bool syntax::get_proc()
         return false;
     }
 
-    _p->keep_hint();
-    return true;
+    MATCH_EXIT;
 }
 
 // entry block
 bool syntax::get_entry()
 {
-    _p->try_hint("entry");
+    HINT_START("entry");
 
     if(!_p->match(KW_ENTRY)){
         _p->cancel_try();
@@ -95,8 +88,7 @@ bool syntax::get_entry()
         return false;
     }
 
-    _p->keep_hint();
-    return true;
+    MATCH_EXIT;
 }
 
 void syntax::get_statement()

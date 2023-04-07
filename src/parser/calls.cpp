@@ -4,7 +4,7 @@
 // const_value
 bool syntax::get_call_arg()
 {
-    _p->try_hint("call_arg");
+    HINT_START("call_arg");
 
     // Temporary
     if(_p->match(STRING_LIT)){}
@@ -12,71 +12,60 @@ bool syntax::get_call_arg()
     else if(get_scalar_value()){}
     else
     {
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
-    _p->keep_hint();
-    return true;
+    MATCH_EXIT;
 }
 
 // (call_arg,call_arg,..)
 bool syntax::get_call_arg_list()
 {
-    _p->try_hint("call_arg_list");
+    HINT_START("call_arg_list");
 
     if(!_p->match(LPAREN)){
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     if(!get_call_arg()){
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     while(_p->match(COMMA))
     {
         if(!get_call_arg()){
             _p->error_here("An argument must be placed after a comma.");
-            _p->cancel_try();
-            return false;
+            ERROR_EXIT;
         }
     }
 
     if(!_p->match(RPAREN)){
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
-    _p->keep_hint();
-    return true;
+    MATCH_EXIT;
 }
 
 bool syntax::get_proc_call()
 {
-    _p->try_hint("proc_call");
+    HINT_START("proc_call");
 
     if(!_p->match(PERCENT))
     {
-        _p->cancel_try();
-        return false;
+        CANCEL_EXIT;
     }
 
     // Expect
 
     if(!_p->expect(IDENTIFIER)){
-        _p->cancel_try();
-        return false;
+        ERROR_EXIT;
     }
 
     if(!get_call_arg_list())
     {
         _p->error_line_remain("Procedure call requires arguments.");
-        _p->cancel_try();
-        return false;
+        ERROR_EXIT;
     }
 
-    _p->keep_hint();
-    return true;
+    MATCH_EXIT;
 }

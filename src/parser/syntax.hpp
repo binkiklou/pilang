@@ -2,6 +2,17 @@
 
 #include "parser.hpp"
 
+#define HINT_START(c) _p->try_hint(c);
+
+#define CANCEL_EXIT _p->cancel_try(); \
+return false;
+
+#define ERROR_EXIT _p->keep_hint(); \
+return false;
+
+#define MATCH_EXIT _p->keep_hint(); \
+return true;
+
 /*
 Uses the parser to create the parse tree,
 tbh the only reason this class exists is that
