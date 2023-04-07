@@ -44,3 +44,8 @@ void print_error(std::string str)
 {
     std::cout<<colored("[ERROR] ",RED)<<str<<"\n";
 }
+
+void print_warning(std::string str)
+{
+    std::cout<<colored("[WARNING]",YELLOW)<<str<<"\n";
+}

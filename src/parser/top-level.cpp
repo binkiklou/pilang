@@ -67,6 +67,8 @@ bool syntax::get_proc()
         return false;
     }
 
+    _p->warning_here("The implementation of procedures is incomplete");
+
     if(!get_block()){
         _p->error_here("Block is expected after a proc");
         _p->cancel_try();

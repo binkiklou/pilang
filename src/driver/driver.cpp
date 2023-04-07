@@ -175,7 +175,19 @@ void driver::_dump_tree()
 
 void driver::_write_diagnostic(diagnostic& diag)
 {
-    print_error(diag.m_msg);
+    switch(diag.m_level)
+    {
+        case diagnostic_level::error:
+        print_error(diag.m_msg);
+        break;
+        case diagnostic_level::warning:
+        print_warning(diag.m_msg);
+        break;
+        case diagnostic_level::info:
+        print(diag.m_msg);
+        break;
+    }
+    //print_error(diag.m_msg);
 
     if(diag.m_show)
     {

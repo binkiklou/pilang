@@ -24,3 +24,4 @@ std::string colored(const std::string&, colors);
 void print(std::string);
 void print_verbose(std::string);
 void print_error(std::string);
+void print_warning(std::string);

@@ -140,6 +140,28 @@ bool parser::expect(const TKN_TYPE& t)
     return true;
 }
 
+void parser::warning_here(const std::string& msg)
+{
+    _add_error_node();
+
+    if(m_state != PARSER_STATE::PARSER_OK && m_state != PARSER_STATE::PARSER_RECOVERED)
+    {
+        print_verbose("Ignoring error " + msg); 
+        return;
+    }
+
+    diagnostic d;
+    d.m_type = diagnostic_type::syntax_diag;
+    d.m_level = diagnostic_level::warning;
+    d.m_msg = msg;
+    d.m_show = true;
+    d.m_vlcount = 0;
+    d.m_has_cursor = true;
+    d.m_clength = peek_now().m_word.data.length();
+    d.m_loc = peek_now().m_word.loc;
+    this->diagnostics.push_back(d);
+}
+
 void parser::error_here(const std::string& msg)
 {
     _add_error_node();

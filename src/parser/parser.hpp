@@ -90,6 +90,9 @@ class parser
     // Match but create error if token is unexpected
     bool expect(const TKN_TYPE&);
 
+    // Assume simple warning at current token
+    void warning_here(const std::string&);
+
     // Assumes simple error at current token
     void error_here(const std::string&);
 
