@@ -2,7 +2,7 @@
 
 #include <stack>
 
-#include "../lexer/lexer.hpp"
+#include "lexer/lexer.hpp"
 
 // NODE
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "source.hpp"
+#include "lexer/source.hpp"
 
 enum TKN_TYPE {
     UNKNOWN,

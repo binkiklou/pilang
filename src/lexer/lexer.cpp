@@ -1,6 +1,6 @@
-#include "lexer.hpp"
+#include "lexer/lexer.hpp"
 
-#include "../shared/print.hpp"
+#include "shared/print.hpp"
 
 #define SINGLE_CHAR_SYMBOL(a, b) case a: \
 tkn.m_type = b;\

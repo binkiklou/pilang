@@ -1,8 +1,8 @@
-#include "parser.hpp"
+#include "parser/parser.hpp"
 
-#include "syntax.hpp"
+#include "parser/syntax.hpp"
 
-#include "../shared/print.hpp"
+#include "shared/print.hpp"
 
 bool syntax::get_assign()
 {

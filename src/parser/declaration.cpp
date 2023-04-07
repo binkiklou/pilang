@@ -2,9 +2,9 @@
 This file defines every methods required for parsing declarations
 */
 
-#include "syntax.hpp"
+#include "parser/syntax.hpp"
 
-#include "../shared/print.hpp"
+#include "shared/print.hpp"
 
 // datatype
 // !datatype

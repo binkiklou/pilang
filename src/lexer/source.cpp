@@ -1,6 +1,6 @@
-#include "source.hpp"
+#include "lexer/source.hpp"
 
-#include "../shared/print.hpp"
+#include "shared/print.hpp"
 
 source::source()
 {

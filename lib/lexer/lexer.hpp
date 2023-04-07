@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../driver/diagnostic.hpp"
-#include "source.hpp"
-#include "token.hpp"
+#include "driver/diagnostic.hpp"
+#include "lexer/source.hpp"
+#include "lexer/token.hpp"
 
 class lexer
 {

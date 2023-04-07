@@ -1,9 +1,9 @@
 #pragma once
 
-#include "diagnostic.hpp"
-#include "../lexer/source.hpp"
-#include "../lexer/lexer.hpp"
-#include "../parser/parser.hpp"
+#include "driver/diagnostic.hpp"
+#include "lexer/source.hpp"
+#include "lexer/lexer.hpp"
+#include "parser/parser.hpp"
 
 class driver
 {

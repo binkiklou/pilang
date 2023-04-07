@@ -1,4 +1,4 @@
-#include "syntax.hpp"
+#include "parser/syntax.hpp"
 
 // Single argument
 // const_value

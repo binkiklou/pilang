@@ -1,6 +1,6 @@
-#include "driver.hpp"
+#include "driver/driver.hpp"
 
-#include "../shared/print.hpp"
+#include "shared/print.hpp"
 
 #include <fstream>
 

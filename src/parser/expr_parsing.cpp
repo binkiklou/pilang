@@ -4,7 +4,7 @@ In the syntax parser, operations are not parsed according to their order. Orderi
 of operations is done in the AST builder.
 */
 
-#include "syntax.hpp"
+#include "parser/syntax.hpp"
 
 // Const_value, so any literal and nothing else
 bool syntax::get_scalar_value()

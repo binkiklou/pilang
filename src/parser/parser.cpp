@@ -1,6 +1,6 @@
-#include "parser.hpp"
+#include "parser/parser.hpp"
 
-#include "../shared/print.hpp"
+#include "shared/print.hpp"
 
 #include <memory>
 
