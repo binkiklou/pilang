@@ -12,11 +12,26 @@ parser_node::parser_node()
 
 parser_node::~parser_node()
 {
-    print_verbose("Deleting base parser_node");
+    //print_verbose("Deleting base parser_node");
     for(parser_node* child : this->m_children)
     {
-        delete child;
+        switch(child->m_type)
+        {
+            default:
+            delete static_cast<parser_node*>(child);
+            break;
+            case HINT_NODE:
+            delete static_cast<hint_node*>(child);
+            break;
+            case TOKEN_NODE:
+            delete static_cast<token_node*>(child);
+            break;
+            case ERROR_NODE:
+            delete static_cast<error_node*>(child);
+            break;
+        }
     }
+    m_children.clear();
 }
 
 std::string parser_node::get_node_str()
@@ -268,6 +283,7 @@ void parser::cancel_try()
 {
     _pos = _try_pos.top();
     _try_pos.pop();
+    delete _try_nodes.top();
     _try_nodes.pop();
     if(_try_nodes.size() > 0){
         _node_ptr = _try_nodes.top();

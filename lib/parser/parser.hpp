@@ -43,7 +43,7 @@ class token_node : public parser_node
 {
     public:
     token_node();
-    
+
     virtual std::string get_node_str() override;
     
     token m_token;
