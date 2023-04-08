@@ -28,6 +28,7 @@ class location
     std::string as_string();
 };
 
+
 // Location inside a source file
 class word
 {

@@ -17,7 +17,7 @@ parser_node::~parser_node()
     {
         switch(child->m_type)
         {
-            default:
+            case EMPTY_NODE:
             delete static_cast<parser_node*>(child);
             break;
             case HINT_NODE:

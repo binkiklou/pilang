@@ -59,11 +59,20 @@ void driver::start(source* src)
         return;
     }
 
-        // Should only allow dump for certain errors
-        if(dump_syntax_tree)
-        {
-            _dump_tree();
-        }
+    // Should only allow dump for certain errors
+    if(dump_syntax_tree)
+    {
+        _dump_tree();
+    }
+
+    // AST Builder
+    this->m_ast_builder->parse_tree = &(m_parser->m_root);
+    if(!this->m_ast_builder->build())
+    {
+        print_verbose("AST Builder failed, aborting compilation.");
+        _delete_phases();
+        return;
+    }
 
     _delete_phases();
 }
@@ -105,6 +114,8 @@ void driver::_init_phases()
     this->m_lexer->m_src = this->m_src;
 
     this->m_parser = new parser;
+
+    this->m_ast_builder = new ast_builder;
 }
 
 void driver::_delete_phases()
@@ -121,6 +132,12 @@ void driver::_delete_phases()
     {
         delete this->m_parser;
         this->m_parser = nullptr;
+    }
+
+    if(this->m_ast_builder != nullptr)
+    {
+        delete  this->m_ast_builder;
+        this->m_ast_builder = nullptr;
     }
 }
 

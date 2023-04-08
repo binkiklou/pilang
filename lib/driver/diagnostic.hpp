@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "lexer/source.hpp"
+#include "shared/source.hpp"
 
 // Location in the compiler
 enum diagnostic_type

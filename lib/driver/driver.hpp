@@ -1,9 +1,10 @@
 #pragma once
 
 #include "driver/diagnostic.hpp"
-#include "lexer/source.hpp"
+#include "shared/source.hpp"
 #include "lexer/lexer.hpp"
 #include "parser/parser.hpp"
+#include "ast_builder/ast_builder.hpp"
 
 class driver
 {
@@ -37,4 +38,5 @@ class driver
     source* m_src;
     lexer* m_lexer;
     parser* m_parser;
+    ast_builder* m_ast_builder;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "driver/diagnostic.hpp"
-#include "lexer/source.hpp"
+#include "shared/source.hpp"
 #include "lexer/token.hpp"
 
 class lexer
