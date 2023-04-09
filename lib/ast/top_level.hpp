@@ -13,7 +13,7 @@ enum TOP_LEVEL_STMT_TYPE {
     FN_DECL_STMT
 };
 
-class ast_top_level_stmt : ast_node
+class ast_top_level_stmt : public ast_node
 {
     public:
     ast_top_level_stmt();

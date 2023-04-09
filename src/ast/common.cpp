@@ -1,12 +1,5 @@
 #include "ast/common.hpp"
 
-// --- NODE STATE ---
-
-ast_node_state::ast_node_state()
-{
-    m_type = AST_NODE_INVALID;
-}
-
 // --- AST LOCATION ---
 
 ast_loc::ast_loc()
@@ -27,7 +20,7 @@ ast_loc_large::ast_loc_large() {
 ast_node::ast_node()
 {
     m_loc = nullptr;
-    m_state = nullptr;
+    m_state = AST_NODE_INVALID;
 }
 
 // --- Identifier ---

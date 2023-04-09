@@ -56,7 +56,7 @@ token_node::token_node()
 
 std::string token_node::get_node_str()
 {
-    return colored("[TOKEN]", GREEN) + "("+tkn_type_as_string(m_token.m_type)+":"+m_token.m_word.data+")";
+    return colored(std::string("[TOKEN] ") + std::to_string(m_token.m_id), GREEN) + "("+tkn_type_as_string(m_token.m_type)+":"+m_token.m_word.data+")";
 }
 
 error_node::error_node()

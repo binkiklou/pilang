@@ -5,17 +5,11 @@
 #include <string>
 
 // --- AST STATE ---
-enum AST_NODE_STATE_TYPE {
+enum ast_node_state {
     AST_NODE_INVALID, // Base nodes shouldn't exist alone
     AST_NODE_OK,
     AST_NODE_UNFOUND,
     AST_NODE_ERRORED
-};
-
-class ast_node_state
-{
-    ast_node_state();
-    AST_NODE_STATE_TYPE m_type;
 };
 
 // --- AST Location ---
@@ -31,6 +25,7 @@ class ast_loc
 {
     public:
     ast_loc();
+
     ast_loc_type m_type;
 };
 
@@ -38,12 +33,15 @@ class ast_loc_single : public ast_loc
 {
     public:
     ast_loc_single();
+    location m_loc;
 };
 
 class ast_loc_large : public ast_loc
 {
     public:
     ast_loc_large();
+    location m_start;
+    location m_end;
 };
 
 // --- AST Node ---
@@ -53,10 +51,8 @@ class ast_node
     public:
     ast_node();
 
-    // Not very safe :/
-
     ast_loc* m_loc;
-    ast_node_state* m_state;
+    ast_node_state m_state;
 };
 
 // --- Identifier ---
@@ -84,7 +80,7 @@ enum DATATYPES {
     TYPE_DOUBLE
 };
 
-class ast_typespec
+class typespec
 {
     public:
     TYPESPEC_FORM m_form;

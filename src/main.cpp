@@ -34,6 +34,10 @@ int main(int argc, char* argv[])
         {
             d.dump_syntax_tree = true;
         }
+        else if(strcmp("-dump-ast",argv[i]) == 0)
+        {
+            d.dump_ast = true;
+        }
         else if(s == nullptr)
         {
             s = new source;

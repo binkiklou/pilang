@@ -1,5 +1,7 @@
 #include "driver/driver.hpp"
 
+#include "driver/ast_dumper.hpp"
+
 #include "shared/print.hpp"
 
 #include <fstream>
@@ -67,11 +69,23 @@ void driver::start(source* src)
 
     // AST Builder
     this->m_ast_builder->parse_tree = &(m_parser->m_root);
+    this->m_ast_builder->tokens = this->m_lexer->tokens;
     if(!this->m_ast_builder->build())
     {
         print_verbose("AST Builder failed, aborting compilation.");
+
+        if(this->dump_ast)
+        {
+            _dump_ast();
+        }
+
         _delete_phases();
         return;
+    }
+
+    if(this->dump_ast)
+    {
+        _dump_ast();
     }
 
     _delete_phases();
@@ -188,6 +202,17 @@ void driver::_dump_tree()
 
     print_verbose("Dumping syntax tree");
     _dump_pnode(&this->m_parser->m_root, 0);
+}
+
+void driver::_dump_ast()
+{
+    if(m_ast_builder == nullptr){
+        return;
+    }
+    print_verbose("Dumping AST");
+    ast_dumper dumper;
+    dumper.root = &(m_ast_builder->ast);
+    dumper.dump_ast();
 }
 
 void driver::_write_diagnostic(diagnostic& diag)
