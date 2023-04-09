@@ -7,9 +7,9 @@
 
 enum STMT_TYPE {
     INVALID_STMT,
-    DECL_STMT,
-    DECLDEF_STMT,
-    DEF_STMT
+    VAR_DECL_STMT,
+    VAR_DECLDEF_STMT,
+    VAR_DEF_STMT
 };
 
 class ast_stmt : public ast_node
@@ -19,14 +19,13 @@ class ast_stmt : public ast_node
     STMT_TYPE m_type;
 };
 
-class ast_decl : public ast_stmt
+class ast_vdecl : public ast_stmt
 {
     public:
-    ast_decl();
-    typespec m_typespec;
-    identifier m_ident;
+    ast_vdecl();
+    ast_typespec m_typespec;
+    ast_identifier m_ident;
 };
-
 
 class ast_block_stmt : public ast_node
 {

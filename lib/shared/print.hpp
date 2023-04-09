@@ -15,7 +15,8 @@ enum colors
     RED,
     GREEN,
     BLUE,
-    YELLOW
+    YELLOW,
+    GRAY
 };
 
 // Gives color visible in the terminal to the string

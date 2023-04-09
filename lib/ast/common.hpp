@@ -6,7 +6,8 @@
 
 // --- AST STATE ---
 enum ast_node_state {
-    AST_NODE_INVALID, // Base nodes shouldn't exist alone
+    AST_NODE_BASE, // Base nodes shouldn't exist alone
+    AST_NODE_INVALID,
     AST_NODE_OK,
     AST_NODE_UNFOUND,
     AST_NODE_ERRORED
@@ -57,11 +58,10 @@ class ast_node
 
 // --- Identifier ---
 
-class identifier : public ast_node
+class ast_identifier : public ast_node
 {
     public:
-    identifier();
-    ~identifier();
+    ast_identifier();
     std::string m_ident;
 };
 
@@ -80,9 +80,10 @@ enum DATATYPES {
     TYPE_DOUBLE
 };
 
-class typespec
+class ast_typespec : public ast_node
 {
     public:
+    ast_typespec();
     TYPESPEC_FORM m_form;
     DATATYPES m_type;
 };

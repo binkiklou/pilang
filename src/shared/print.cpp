@@ -23,6 +23,9 @@ std::string colored(const std::string& text, colors c)
         case YELLOW:
         prefix += "33m";
         break;
+        case GRAY:
+        prefix += "37m";
+        break;
     }
     return prefix + text + "\u001b[0m";
 }

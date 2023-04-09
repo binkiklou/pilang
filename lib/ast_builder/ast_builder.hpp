@@ -38,6 +38,7 @@ class ast_builder
     // returns the min and max token position in tokens of tree
     std::pair<unsigned int, unsigned int> _get_token_pos_minmax(hint_node*);
 
+    ast_loc_single* _get_single_loc(token_node*);
     ast_loc_large* _get_large_loc(hint_node*);
 
     //  Returns true if a node is valid
@@ -45,15 +46,18 @@ class ast_builder
 
     std::vector<token_node*>  _get_tokens(parser_node*);
     std::vector<hint_node*> _get_hints(parser_node*);
+
+    search_result _find_token(TKN_TYPE, parser_node*);
     search_result _find_hint(const std::string&, parser_node*);
 
     // build functions
 
     // common
-    typespec build_typespec(hint_node*);
+    ast_identifier build_identifier(token_node*);
+    ast_typespec build_typespec(hint_node*);
 
     // statements
-
+    ast_vdecl build_vdecl(hint_node*);
 
 
     ast_block_stmt build_block_stmt(hint_node*);

@@ -52,17 +52,17 @@ std::string ast_dumper::_dump_loc(ast_loc* loc)
         ast_loc_single* single_loc = static_cast<ast_loc_single*>(loc);
         std::string result;
         result = "(";
-        result += single_loc->m_loc.as_string();
+        result += colored(single_loc->m_loc.as_string(),GREEN);
         result += ")";
-        return "LOC_SINGLE";
+        return result;
     }
     else if(loc->m_type == LOC_LARGE){
         ast_loc_large* large_loc = static_cast<ast_loc_large*>(loc);
         std::string result;
         result = "(";
-        result += large_loc->m_start.as_string();
+        result += colored(large_loc->m_start.as_string(),GREEN);
         result += ":";
-        result += large_loc->m_end.as_string();
+        result += colored(large_loc->m_end.as_string(),GREEN);
         result += ")";
         return result;
     }
@@ -81,20 +81,97 @@ std::string ast_dumper::_get_node_str(const std::string& name, ast_node* n)
     return result;
 }
 
-dump_node ast_dumper::_dump_stmt(ast_stmt* node)
+dump_node ast_dumper::_dump_ident(ast_identifier node)
 {
-    return dump_node("STMT");
+    return dump_node(_get_node_str("IDENTIFIER", &node) + ": \"" + node.m_ident + "\"");
 }
 
-dump_node ast_dumper::_dump_block_stmt(ast_block_stmt* node)
+dump_node ast_dumper::_dump_typespec(ast_typespec node)
 {
-    if(node == nullptr || node->m_state == AST_NODE_UNFOUND){
+    dump_node dnode(_get_node_str("TYPESPEC", &node));
+
+    std::string info;
+
+    info += "FORM:(";
+
+    switch(node.m_form){
+        case FORM_SCALAR:
+        info += colored("FORM_SCALAR",GRAY);
+        break;
+        case FORM_ARR:
+        info += colored("FORM_ARR",GRAY);
+        break;
+        default:
+        info += colored("FORM_ERR",GRAY);
+        break;
+    }
+
+    info += "); TYPE:(";
+
+    switch(node.m_type){
+        case TYPE_BOOL:
+        info += "TYPE_BOOL";
+        break;
+        case TYPE_CHAR:
+        info += "TYPE_CHAR";
+        break;
+        case TYPE_INT:
+        info += "TYPE_INT";
+        break;
+        case TYPE_FLOAT:
+        info += "TYPE_FLOAT";
+        break;
+        case TYPE_DOUBLE:
+        info += "TYPE_DOUBLE";
+        break;
+        default:
+        info += "TYPE_UNDEF";
+        break;
+    }
+    info += ")";
+    dnode.add_child(dump_node(info));
+    return dnode;
+}
+
+dump_node ast_dumper::_dump_vdecl(ast_vdecl* node)
+{
+    dump_node dnode(_get_node_str("VDECL", node));
+
+    dnode.add_child(_dump_typespec(node->m_typespec));
+
+    dnode.add_child(_dump_ident(node->m_ident));
+
+    return dnode;
+}
+
+dump_node ast_dumper::_dump_stmt(ast_stmt* node)
+{
+    switch(node->m_type)
+    {
+        case VAR_DECL_STMT:{
+            return _dump_vdecl(static_cast<ast_vdecl*>(node));
+        }
+        /*case VAR_DECLDEF_STMT:{
+            break;
+        }
+        case VAR_DEF_STMT:{
+            return dump_node();
+        }*/
+        default:{
+            return dump_node("BASE_STMT");
+        }
+    }
+}
+
+dump_node ast_dumper::_dump_block_stmt(ast_block_stmt node)
+{
+    if(node.m_state == AST_NODE_INVALID){
         return dump_node();
     }
 
-    dump_node dnode(_get_node_str("BLOCK_STMT", node));
+    dump_node dnode(_get_node_str("BLOCK_STMT", &node));
 
-    for(ast_stmt* stmt : node->m_stmts)
+    for(ast_stmt* stmt : node.m_stmts)
     {
         dnode.add_child(_dump_stmt(stmt));
     }
@@ -116,6 +193,7 @@ dump_node ast_dumper::_dump_top_level_stmt(ast_top_level_stmt* node)
         case ENTRY_STMT:
         {
             dump_node dnode(_get_node_str("ENTRY_STMT", node));
+            dnode.add_child(_dump_block_stmt(static_cast<ast_entry_stmt*>(node)->m_block));
             return dnode;
         }
 

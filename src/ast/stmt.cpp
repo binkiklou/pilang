@@ -7,7 +7,7 @@ ast_stmt::ast_stmt()
     this->m_type = INVALID_STMT;
 }
 
-ast_decl::ast_decl()
+ast_vdecl::ast_vdecl()
 {
-    this->m_type = DECL_STMT;
+    this->m_type = VAR_DECL_STMT;
 }

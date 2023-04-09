@@ -219,6 +219,36 @@ bool syntax::get_fndecl()
 
 // ident : arr_init
 // ident : arrow_expr
+bool syntax::get_vardecldef()
+{
+    HINT_START("vardecldef");
+
+    if(!get_typespec())
+    {
+        CANCEL_EXIT;
+    }
+
+    if(!_p->match(IDENTIFIER))
+    {
+        _p->error_here("An identifier is required after a typespec");
+        ERROR_EXIT;
+    }
+
+    if(!_p->match(COLON))
+    {
+        CANCEL_EXIT;
+    }
+
+    if(get_array_expr()) {}
+    else
+    {
+        _p->error_line_remain("Expected valid array declaration");
+        ERROR_EXIT;
+    }
+
+    MATCH_EXIT;
+}
+
 bool syntax::get_vardecl()
 {
     HINT_START("vardecl");
@@ -234,15 +264,6 @@ bool syntax::get_vardecl()
         ERROR_EXIT;
     }
 
-    if(_p->match(COLON))
-    {
-        if(get_array_expr()) {}
-        else
-        {
-            _p->error_line_remain("Expected valid array declaration");
-            ERROR_EXIT;
-        }
-    }
 
     MATCH_EXIT;
 }

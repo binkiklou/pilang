@@ -109,7 +109,8 @@ bool syntax::get_import()
 
 void syntax::get_statement()
 {
-    if(get_vardecl()){}
+    if(get_vardecldef()){}
+    else if(get_vardecl()){}
     else if(get_assign()){}
     else if(get_proc_call()){}
     else{_p->error_line_remain("Unrecognized statement");}

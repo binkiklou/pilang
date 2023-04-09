@@ -42,6 +42,13 @@ std::pair<unsigned int, unsigned int> ast_builder::_get_token_pos_minmax(hint_no
     return min_max;
 }
 
+ast_loc_single* ast_builder::_get_single_loc(token_node* tkn)
+{
+    ast_loc_single* loc = new ast_loc_single;
+    loc->m_loc = tkn->m_token.m_word.loc;
+    return loc;
+}
+
 ast_loc_large* ast_builder::_get_large_loc(hint_node* h)
 {
     ast_loc_large* loc = new ast_loc_large;
@@ -51,6 +58,7 @@ ast_loc_large* ast_builder::_get_large_loc(hint_node* h)
     // Should add checks
     loc->m_start = tokens->at(mm.first).m_word.loc;
     loc->m_end = tokens->at(mm.second).m_word.loc;
+    loc->m_end.col += tokens->at(mm.second).m_word.data.length();
 
     return loc;
 }
@@ -68,7 +76,7 @@ bool ast_builder::_is_valid(ast_node* n)
     return false;
 }
 
-std::vector<token_node*> _get_tokens(parser_node* node)
+std::vector<token_node*> ast_builder::_get_tokens(parser_node* node)
 {
     std::vector<token_node*> tokens;
 
@@ -106,10 +114,38 @@ std::vector<hint_node*> ast_builder::_get_hints(parser_node* node)
     return hints;
 }
 
+search_result ast_builder::_find_token(TKN_TYPE type, parser_node* node)
+{
+    if(node == nullptr){
+        print_verbose("Tried to search null node for tokens");
+        return search_result{false};
+    }
+    
+    search_result result;
+
+    for(token_node* tkn : _get_tokens(node))
+    {
+        if(tkn->m_token.m_type == type)
+        {
+            if(result.found && result.is_unique){
+                result.is_unique = false;
+            }
+            
+            if(!result.found){
+                result.found = true;
+            }
+
+            result.results.push_back(tkn);
+        }
+    }
+
+    return  result;
+}
+
 search_result ast_builder::_find_hint(const std::string& hint, parser_node* node)
 {
     if(node  == nullptr){
-        print_verbose("Tried to search empty node");
+        print_verbose("Tried to search null node for hints");
         return search_result{false};
     }
 

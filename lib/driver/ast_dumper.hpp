@@ -34,7 +34,12 @@ class ast_dumper
     std::string _dump_loc(ast_loc*);
     std::string _get_node_str(const std::string&, ast_node*);
 
+    dump_node _dump_ident(ast_identifier);
+    dump_node _dump_typespec(ast_typespec);
+
+    dump_node _dump_vdecl(ast_vdecl*);
+
     dump_node _dump_stmt(ast_stmt*);
-    dump_node _dump_block_stmt(ast_block_stmt*);
+    dump_node _dump_block_stmt(ast_block_stmt);
     dump_node _dump_top_level_stmt(ast_top_level_stmt*);
 };

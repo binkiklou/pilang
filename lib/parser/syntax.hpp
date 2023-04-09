@@ -52,6 +52,7 @@ class syntax
     bool get_arr_init();
 
     bool get_assign();
+    bool get_vardecldef();
     bool get_vardecl();
 
     bool get_param();

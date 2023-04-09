@@ -20,11 +20,19 @@ ast_loc_large::ast_loc_large() {
 ast_node::ast_node()
 {
     m_loc = nullptr;
-    m_state = AST_NODE_INVALID;
+    m_state = AST_NODE_BASE;
 }
 
 // --- Identifier ---
-identifier::identifier()
+
+ast_identifier::ast_identifier()
 {
-    m_loc = new ast_loc_single();
+    m_state = AST_NODE_OK;
+}
+
+// --- Typespec ---
+
+ast_typespec::ast_typespec()
+{
+    m_state = AST_NODE_OK;
 }
