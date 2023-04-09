@@ -8,15 +8,37 @@ dump_node::dump_node(){
     text = "(empty dump_node)";
 }
 
+dump_node::dump_node(bool p){
+    text = "(empty dump_node)";
+    is_property = p;
+}
+
 dump_node::dump_node(const std::string& txt)
 {
     text = txt;
 }
 
+dump_node::dump_node(const std::string& txt, bool p)
+{
+    text = txt;
+    is_property = p;
+}
+
 void dump_node::dump(unsigned int depth)
 {
-    std::string ident = std::string(depth*3, ' ');
-    print(ident + text);
+    std::string indent = std::string(depth*3, ' ');
+
+    if(depth>0 && !is_property){
+        indent[(depth-1)*3] = '|';
+        
+        for(int i = ((depth-1)*3)+1; i < indent.length(); i++){
+            indent[i] = '-';
+            if(i == indent.length() - 1){
+                indent[i] = '>';
+            }
+        }
+    }
+    print(indent + text);
    
     for(std::shared_ptr<dump_node> child : children)
     {
@@ -96,13 +118,13 @@ dump_node ast_dumper::_dump_typespec(ast_typespec node)
 
     switch(node.m_form){
         case FORM_SCALAR:
-        info += colored("FORM_SCALAR",GRAY);
+        info += colored("FORM_SCALAR",BLUE);
         break;
         case FORM_ARR:
-        info += colored("FORM_ARR",GRAY);
+        info += colored("FORM_ARR",BLUE);
         break;
         default:
-        info += colored("FORM_ERR",GRAY);
+        info += colored("FORM_ERR",BLUE);
         break;
     }
 
@@ -110,26 +132,26 @@ dump_node ast_dumper::_dump_typespec(ast_typespec node)
 
     switch(node.m_type){
         case TYPE_BOOL:
-        info += "TYPE_BOOL";
+        info += colored("TYPE_BOOL",BLUE);
         break;
         case TYPE_CHAR:
-        info += "TYPE_CHAR";
+        info += colored("TYPE_CHAR",BLUE);
         break;
         case TYPE_INT:
-        info += "TYPE_INT";
+        info += colored("TYPE_INT",BLUE);
         break;
         case TYPE_FLOAT:
-        info += "TYPE_FLOAT";
+        info += colored("TYPE_FLOAT",BLUE);
         break;
         case TYPE_DOUBLE:
-        info += "TYPE_DOUBLE";
+        info += colored("TYPE_DOUBLE",BLUE);
         break;
         default:
-        info += "TYPE_UNDEF";
+        info += colored("TYPE_UNDEF",BLUE);
         break;
     }
     info += ")";
-    dnode.add_child(dump_node(info));
+    dnode.add_child(dump_node(info, true));
     return dnode;
 }
 

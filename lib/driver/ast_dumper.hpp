@@ -10,12 +10,17 @@ class dump_node
 {
     public:
     dump_node();
+    dump_node(bool);
     dump_node(const std::string&);
+    dump_node(const std::string&,bool);
 
     void dump(unsigned  int);
     void add_child(const dump_node&);
 
     std::string text;
+
+    // if enabled, indentation is different
+    bool is_property = false;
 
     // Litteraly the only place in the code where a smart pointer is used
     std::vector<std::shared_ptr<dump_node>> children;
