@@ -1,6 +1,6 @@
 # Pi Lang
 
-> Pilang is still in a very early stage, and the language is not yet functional.
+> Note: This entire codebase was written in a week then I lost focus, code analysis is mostly working, but interpreting wasn't started. I have no clue how to even use this language and I am the one who made it. 
 
 Pi lang is an array programming language, with a focus on usability.
 
